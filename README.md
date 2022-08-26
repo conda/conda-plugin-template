@@ -3,11 +3,9 @@
 [pluggy docs]: https://pluggy.readthedocs.io/en/stable/index.html#loading-setuptools-entry-points
 [licenses]: https://docs.conda.io/projects/conda/en/latest/dev-guide/plugin-api/index.html#a-note-on-licensing
 
-
 # Custom Subcommand Plugin Tutorial
 
-In this tutorial, we will create a new `conda` subcommand that can convert a string
-into ASCII art.
+In this tutorial, we will create a new `conda` subcommand that can convert a string into ASCII art.
 
 To follow along with this guide, it is recommended that you create and activate a new `conda` environment with the following commands:
 
@@ -29,11 +27,9 @@ Set up your working directory and files as shown below:
 
 ## The custom subcommand module
 
-The following module implements a function, `conda_string_art` (where a specified string gets
-converted into ASCII art), into a plugin manager hook called `conda_subcommands`.
+The following module implements a function, `conda_string_art` (where a specified string gets converted into ASCII art), into a plugin manager hook called `conda_subcommands`.
 
-The `HookImplMarker` decorator is initialized with the name of `conda` as the host
-project in the `conda/plugins/__init__.py` file, and it is invoked via `@conda.plugins.register` in the example subcommand module below:
+The `HookImplMarker` decorator is initialized with the name of `conda` as the host project in the `conda/plugins/__init__.py` file, and it is invoked via `@conda.plugins.register` in the example subcommand module below:
 
 ```python
 # string-art/string_art.py
@@ -64,9 +60,7 @@ def conda_subcommands():
 
 ## Packaging the custom subcommand
 
-In order to run the `conda string-art` subcommand successfully, you will first need
-to either package the subcommand (examples are shown in this section) or register it
-locally (details for how to do that are discussed in the following section).
+In order to run the `conda string-art` subcommand successfully, you will first need to either package the subcommand (examples are shown in this section) or register it locally (details for how to do that are discussed in the following section).
 
 Below is a code snippet that shows how to set up the `pyproject.toml` file to package the `string-art` subcommand:
 
@@ -108,8 +102,7 @@ my-conda-subcommand = "string_art"
 > * **dependencies** These are all of the dependencies for your project. This specific subcommand example requires both `conda` and `art`, which is why they are both listed here.
 
 
-The custom `string-art` subcommand plugin can be installed via `pyproject.toml` as shown above
-by running the following commands (from the same directory where the `pyproject.toml` is located):
+The custom `string-art` subcommand plugin can be installed via `pyproject.toml` as shown above by running the following commands (from the same directory where the `pyproject.toml` is located):
 
 ```bash
 # Make sure you have the latest version of pip & PyPA’s build installed
@@ -168,8 +161,7 @@ setup(
 > * **entry_points** The entry point you list here is how `conda` will discover your plugin and should point to the file containing the `conda.plugins.register` hook. In our simple use case, it points to the `string_art` module contained within the `string_art.py` file. For more complex examples where your module is contained within a folder, it may look more like `my_module.main` or `my_modules.plugin_hooks`.
 > * **py_modules** The `py_modules` variables lets `setup` know exactly where to look for all of the modules that comprise your plugin source code.
 
-The custom `string-art` subcommand plugin can be installed via the `setup.py` example shown above
-by running the following from the directory where the `setup.py` file is located:
+The custom `string-art` subcommand plugin can be installed via the `setup.py` example shown above by running the following from the directory where the `setup.py` file is located:
 
 ```bash
 $ python -m pip install --editable .
@@ -180,8 +172,7 @@ $ python -m pip install --editable .
 
 ## The subcommand output
 
-Once the subcommand plugin is successfully installed or registered, the help text will display
-it as an additional option available from other packages:
+Once the subcommand plugin is successfully installed or registered, the help text will display it as an additional option available from other packages:
 
 ```bash
 $ conda --help
