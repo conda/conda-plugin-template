@@ -178,31 +178,6 @@ $ python -m pip install --editable .
 > **Note:**
 > For more information about entry points specification in general, please read [PyPA's entrypoints documentation][entrypoints docs].
 
-
-## An alternative option: registering a plugin locally
-
-There is also a way to use `setuptools` entrypoints to automatically load plugins that
-are registered through them, via the `load_setup_tools_entrypoints()` method inside of the `get_plugin_manager()` function. This option is particularly useful if you would like to develop and utilize a custom subcommand locally via a cloned `conda` codebase on your machine.
-
-If you prefer not to package your subcommand, the code snippet below shows how to register the `string_art.py` subcommand plugin module in `conda/base/context.py``:
-
-```python
-# conda/base/context.py
-
-@functools.lru_cache(maxsize=None)
-def get_plugin_manager():
-      pm = pluggy.PluginManager("conda")
-      pm.add_hookspecs(plugins)
-      pm.register(string_art)  # <--- this line is registering the custom subcommand
-      # inside of conda itself instead of using an external entrypoint namespace
-      pm.load_setuptools_entrypoints("conda")
-      return pm
-```
-
-> **Note:**
-> For more information, check out the associated [`pluggy` documentation page][pluggy docs].
-
-
 ## The subcommand output
 
 Once the subcommand plugin is successfully installed or registered, the help text will display
