@@ -1,4 +1,5 @@
-[PyPA docs]: https://packaging.python.org/en/latest/tutorials/packaging-projects/#creating-pyproject-toml
+[template]: https://github.com/conda/conda-plugin-template/generate
+[pyproject.toml tutorial]: https://packaging.python.org/en/latest/tutorials/packaging-projects/#creating-pyproject-toml
 [entrypoints docs]: https://packaging.python.org/en/latest/specifications/entry-points/
 [pluggy docs]: https://pluggy.readthedocs.io/en/stable/index.html#loading-setuptools-entry-points
 [licenses]: https://docs.conda.io/projects/conda/en/latest/dev-guide/plugin-api/index.html#a-note-on-licensing
@@ -17,22 +18,20 @@ $ conda activate plugin-tutorial
 
 ## Project directory structure
 
-Set up your working directory and files as shown below:
+Set up your working directory and files as shown below (or create a new repo using this [template][template]):
 
-```bash
-/string-art
-│── string_art.py
+```
+conda-plugin-template/
+├── string_art.py
 └── pyproject.toml (or setup.py)
 ```
 
 ## The custom subcommand module
 
-The following module implements a function, `conda_string_art` (where a specified string gets converted into ASCII art), into a plugin manager hook called `conda_subcommands`.
-
-The `HookImplMarker` decorator is initialized with the name of `conda` as the host project in the `conda/plugins/__init__.py` file, and it is invoked via `@conda.plugins.register` in the example subcommand module below:
+The following module implements a function, `string_art` (where a specified string gets converted into ASCII art), and registers it with the plugin manager hook called `conda_subcommands` using the `@conda.plugins.register` decorator.
 
 ```python
-# string-art/string_art.py
+# string_art.py
 
 from art import text2art
 from typing import Sequence
@@ -40,7 +39,7 @@ from typing import Sequence
 import conda.plugins
 
 
-def conda_string_art(args: Sequence[str]):
+def string_art(args: Sequence[str]) -> None:
       # if using a multi-word string with spaces, make sure to wrap it in quote marks
       output = "".join(args)
       string_art = text2art(output)
@@ -49,11 +48,11 @@ def conda_string_art(args: Sequence[str]):
 
 
 @conda.plugins.register
-def conda_subcommands():
+def conda_subcommands() -> None:
       yield conda.plugins.CondaSubcommand(
          name="string-art",
          summary="tutorial subcommand that prints a string as ASCII art",
-         action=conda_string_art,
+         action=string_art,
       )
 ```
 
@@ -65,14 +64,14 @@ In order to run the `conda string-art` subcommand successfully, you will first n
 Below is a code snippet that shows how to set up the `pyproject.toml` file to package the `string-art` subcommand:
 
 ```toml
-# string-art/pyproject.toml
+# pyproject.toml
 
 [build-system]
 requires = ["setuptools>=61.0", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "my-conda-subcommand"
+name = "string-art"
 version = "1.0.0"
 description = "My string art subcommand plugin"
 requires-python = ">=3.7"
@@ -82,7 +81,7 @@ dependencies = ["conda", "art"]
 py_modules=["string_art"]
 
 [project.entry-points."conda"]
-my-conda-subcommand = "string_art"
+string-art = "string_art"
 ```
 
 > **Note:**
@@ -128,7 +127,7 @@ $ python -m pip install dist/my_conda_subcommand-1.0.0-py3-none-any.whl
 ```
 
 > **Note:**
-> For more information on `pyproject.toml` configuration, please read the related [PyPA documentation page][PyPA docs].
+> For more information on `pyproject.toml` configuration, please read the related [PyPA documentation page][pyproject.toml tutorial].
 
 
 ------------
@@ -136,19 +135,14 @@ $ python -m pip install dist/my_conda_subcommand-1.0.0-py3-none-any.whl
 Another packaging option is to utilize a `setup.py` file, as shown below:
 
 ```python
-# string-art/setup.py
+# setup.py
 
 from setuptools import setup
 
-install_requires = [
-      "conda",
-      "art",
-]
-
 setup(
-      name="my-conda-subcommand",
-      install_requires=install_requires,
-      entry_points={"conda": ["my-conda-subcommand = string_art"]},
+      name="string-art",
+      install_requires=["conda", "art"],
+      entry_points={"conda": ["string-art = string_art"]},
       py_modules=["string_art"],
 )
 ```
