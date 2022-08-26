@@ -72,15 +72,15 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "string-art"
-version = "1.0.0"
+version = "1.0"
 description = "My string art subcommand plugin"
 requires-python = ">=3.7"
-dependencies = ["conda", "art"]
+dependencies = ["conda", "pyfiglet"]
 
 [tools.setuptools]
 py_modules=["string_art"]
 
-[project.entry-points."conda"]
+[project.entry-points.conda]
 string-art = "string_art"
 ```
 
@@ -140,10 +140,13 @@ Another packaging option is to utilize a `setup.py` file, as shown below:
 from setuptools import setup
 
 setup(
-      name="string-art",
-      install_requires=["conda", "art"],
-      entry_points={"conda": ["string-art = string_art"]},
-      py_modules=["string_art"],
+    name="string-art",
+    version="1.0",
+    description="My string art subcommand plugin",
+    python_requires=">=3.7",
+    install_requires=["conda", "pyfiglet"],
+    py_modules=["string_art"],
+    entry_points={"conda": ["string-art = string_art"]},
 )
 ```
 
