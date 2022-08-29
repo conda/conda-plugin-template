@@ -7,7 +7,7 @@ name = "string-art"
 version = "1.0"
 description = "My string art subcommand plugin"
 requires-python = ">=3.7"
-dependencies = ["conda", "pyfiglet"]
+dependencies = ["conda", "art"]
 
 [tools.setuptools]
 py_modules=["string_art"]
