@@ -63,9 +63,10 @@ In order to run the `conda string-art` subcommand successfully, you will first n
 
 Below is a code snippet that shows how to set up the `pyproject.toml` file to package the `string-art` subcommand:
 
-```toml
-# pyproject.toml
+<details>
+<summary><code>pyproject.toml</code></summary>
 
+```toml
 [build-system]
 requires = ["setuptools>=61.0", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
@@ -100,6 +101,7 @@ string-art = "string_art"
 > * **requires-python** The version(s) of Python required by your project.
 > * **dependencies** These are all of the dependencies for your project. This specific subcommand example requires both `conda` and `art`, which is why they are both listed here.
 
+</details>
 
 The custom `string-art` subcommand plugin can be installed via `pyproject.toml` as shown above by running the following commands (from the same directory where the `pyproject.toml` is located):
 
@@ -134,9 +136,10 @@ $ python -m pip install dist/my_conda_subcommand-1.0.0-py3-none-any.whl
 
 Another packaging option is to utilize a `setup.py` file, as shown below:
 
-```python
-# setup.py
+<details>
+<summary><code>setup.py</code></summary>
 
+```python
 from setuptools import setup
 
 setup(
@@ -157,6 +160,8 @@ setup(
 > * **install_requires** These are all of the dependencies for your project. This should at a minimum always contain the version of `conda` for which your plugin is compatible with.
 > * **entry_points** The entry point you list here is how `conda` will discover your plugin and should point to the file containing the `conda.plugins.register` hook. In our simple use case, it points to the `string_art` module contained within the `string_art.py` file. For more complex examples where your module is contained within a folder, it may look more like `my_module.main` or `my_modules.plugin_hooks`.
 > * **py_modules** The `py_modules` variables lets `setup` know exactly where to look for all of the modules that comprise your plugin source code.
+
+</details>
 
 The custom `string-art` subcommand plugin can be installed via the `setup.py` example shown above by running the following from the directory where the `setup.py` file is located:
 
