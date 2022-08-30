@@ -33,27 +33,24 @@ The following module implements a function, `string_art` (where a specified stri
 ```python
 # string_art.py
 
-from art import text2art
 from typing import Sequence
 
 import conda.plugins
+from pyfiglet import print_figlet
 
 
-def string_art(args: Sequence[str]) -> None:
-      # if using a multi-word string with spaces, make sure to wrap it in quote marks
-      output = "".join(args)
-      string_art = text2art(output)
-
-      print(string_art)
+def string_art(args: Sequence[str]):
+    # if using a multi-word string with spaces, make sure to wrap it in quote marks
+    print_figlet("".join(args))
 
 
 @conda.plugins.register
-def conda_subcommands() -> None:
-      yield conda.plugins.CondaSubcommand(
-         name="string-art",
-         summary="tutorial subcommand that prints a string as ASCII art",
-         action=string_art,
-      )
+def conda_subcommands():
+    yield conda.plugins.CondaSubcommand(
+        name="string-art",
+        summary="tutorial subcommand that prints a string as ASCII art",
+        action=string_art,
+    )
 ```
 
 
@@ -75,7 +72,7 @@ name = "string-art"
 version = "1.0"
 description = "My string art subcommand plugin"
 requires-python = ">=3.7"
-dependencies = ["conda", "art"]
+dependencies = ["conda", "pyfiglet"]
 
 [tools.setuptools]
 py_modules=["string_art"]
@@ -98,7 +95,7 @@ string-art = "string_art"
 > * **version** (required) The version of the project; can be specified *either* statically or listed as dynamic.
 > * **description** A brief description of the project.
 > * **requires-python** The version(s) of Python required by your project.
-> * **dependencies** These are all of the dependencies for your project. This specific subcommand example requires both `conda` and `art`, which is why they are both listed here.
+> * **dependencies** These are all of the dependencies for your project. This specific subcommand example requires both `conda` and `pyfiglet`, which is why they are both listed here.
 
 
 The custom `string-art` subcommand plugin can be installed via `pyproject.toml` as shown above by running the following commands (from the same directory where the `pyproject.toml` is located):
@@ -144,7 +141,7 @@ setup(
     version="1.0",
     description="My string art subcommand plugin",
     python_requires=">=3.7",
-    install_requires=["conda", "art"],
+    install_requires=["conda", "pyfiglet"],
     py_modules=["string_art"],
     entry_points={"conda": ["string-art = string_art"]},
 )
