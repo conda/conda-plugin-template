@@ -3,8 +3,8 @@ requires = ["setuptools>=61.0", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "my-conda-subcommand"
-version = "1.0.0"
+name = "string-art"
+version = "1.0"
 description = "My string art subcommand plugin"
 requires-python = ">=3.7"
 dependencies = ["conda", "art"]
@@ -12,5 +12,5 @@ dependencies = ["conda", "art"]
 [tools.setuptools]
 py_modules=["string_art"]
 
-[project.entry-points."conda"]
-my-conda-subcommand = "string_art"
+[project.entry-points.conda]
+string-art = "string_art"
