@@ -18,7 +18,7 @@ $ conda activate plugin-tutorial
 
 ## Project directory structure
 
-Set up your working directory and files as shown below (or create a new repo using this [template][template]):
+Set up your working directory and files as shown below (or create a new repo using this [template][https://github.com/conda/conda-plugin-template/generate]):
 
 ```
 conda-plugin-template/
