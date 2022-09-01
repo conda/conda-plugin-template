@@ -61,7 +61,7 @@ def conda_subcommands() -> None:
 
 ## Packaging the custom subcommand
 
-In order install the `conda string-art` subcommand we will need to configure a Python build system. You can either use the [PEP 621][pep 621] compliant `pyproject.toml` or the classic `setup.py`:
+In order to install the `conda string-art` subcommand we will need to configure a Python build system. You can either use the [PEP 621][pep 621] compliant `pyproject.toml` or the classic `setup.py`:
 
 <details>
 <summary><code>pyproject.toml</code></summary>
