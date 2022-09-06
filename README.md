@@ -1,19 +1,19 @@
 [template]: https://github.com/conda/conda-plugin-template/generate
-[pyproject.toml tutorial]: https://packaging.python.org/en/latest/tutorials/packaging-projects/#creating-pyproject-toml
+[pyproject.toml docs]: https://packaging.python.org/en/latest/tutorials/packaging-projects/#creating-pyproject-toml
 [entrypoints docs]: https://packaging.python.org/en/latest/specifications/entry-points/
 [pluggy docs]: https://pluggy.readthedocs.io/en/stable/index.html#loading-setuptools-entry-points
 [licenses]: https://docs.conda.io/projects/conda/en/latest/dev-guide/plugin-api/index.html#a-note-on-licensing
+[pep 621]: https://peps.python.org/pep-0621/
+[setup.py docs]: https://docs.python.org/3/distutils/setupscript.html
 
 # Custom Subcommand Plugin Tutorial
 
 In this tutorial, we will create a new `conda` subcommand that can convert a string into ASCII art.
 
-To follow along with this guide, it is recommended that you create and activate a new `conda` environment with the following commands:
+To follow along with this guide make sure you have the latest conda and conda-build installed:
 
 ```bash
-$ conda create -n plugin-tutorial "python>=3"
-
-$ conda activate plugin-tutorial
+(base) $ conda update conda conda-build
 ```
 
 ## Project directory structure
@@ -22,6 +22,8 @@ Set up your working directory and files as shown below (or create a new repo usi
 
 ```
 conda-plugin-template/
+├── recipe/
+│   └── meta.yaml
 ├── string_art.py
 └── pyproject.toml (or setup.py)
 ```
@@ -59,13 +61,12 @@ def conda_subcommands() -> None:
 
 ## Packaging the custom subcommand
 
-In order to run the `conda string-art` subcommand successfully, you will first need to either package the subcommand (examples are shown in this section) or register it locally (details for how to do that are discussed in the following section).
+In order to install the `conda string-art` subcommand we will need to configure a Python build system. You can either use the [PEP 621][pep 621] compliant `pyproject.toml` or the classic `setup.py`:
 
-Below is a code snippet that shows how to set up the `pyproject.toml` file to package the `string-art` subcommand:
+<details>
+<summary><code>pyproject.toml</code></summary>
 
 ```toml
-# pyproject.toml
-
 [build-system]
 requires = ["setuptools>=61.0", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
@@ -85,58 +86,25 @@ string-art = "string_art"
 ```
 
 > **Note:**
-> Below is a list of explanations of the metadata that we are specifying in the `pyproject.toml` example above:
+> #### `[build-system]`
+> - `requires` This is a list of requirement specifiers for build-time dependencies of a package.
+> - `build-backend` Build backends have the ability to accept configuration settings, which can change the way that the package building is handled.
 > 
-> `[build-system]`
-> 
-> * **requires** This is a list of requirement specifiers for build-time dependencies of a package.
-> * **build-backend** Build backends have the ability to accept configuration settings, which can change the way that the package building is handled.
-> 
-> `[project]`
-> 
-> * **name** (required) This is the name of the package that contains your subcommand. This is also how others will find your subcommand package if you choose to upload it to PyPI.
-> * **version** (required) The version of the project; can be specified *either* statically or listed as dynamic.
-> * **description** A brief description of the project.
-> * **requires-python** The version(s) of Python required by your project.
-> * **dependencies** These are all of the dependencies for your project. This specific subcommand example requires both `conda` and `art`, which is why they are both listed here.
+> #### `[project]`
+> * `name` (required) This is the name of the package that contains your subcommand. This is also how others will find your subcommand package if you choose to upload it to PyPI.
+> * `version` (required) The version of the project; can be specified *either* statically or listed as dynamic.
+> `description` A brief description of the project.
+> * `requires-python` The version(s) of Python required by your project.
+> * `dependencies` These are all of the dependencies for your project. This specific subcommand example requires both `conda` and `art`, which is why they are both listed here.
+>
+> For more information on `pyproject.toml` see the [PyPA packaging documentation][pyproject.toml docs].
 
+</details>
 
-The custom `string-art` subcommand plugin can be installed via `pyproject.toml` as shown above by running the following commands (from the same directory where the `pyproject.toml` is located):
-
-```bash
-# Make sure you have the latest version of pip & PyPA’s build installed
-$ python -m pip install --upgrade pip build
-
-# Run this command from the same directory where the pyproject.toml file is located
-$ python -m build
-```
-
-At this point, if the custom subcommand package was built successfully, there should be a `dist` directory inside of the `string-art` directory with the following contents:
-
-```bash
-/dist
-│── my-conda-subcommand-1.0.0.tar.gz
-└── my_conda_subcommand-1.0.0-py3-none-any.whl
-```
-
-Run the following command in order to install the `string-art` subcommand package:
-
-```bash
-# Install the string-art package
-$ python -m pip install dist/my_conda_subcommand-1.0.0-py3-none-any.whl
-```
-
-> **Note:**
-> For more information on `pyproject.toml` configuration, please read the related [PyPA documentation page][pyproject.toml tutorial].
-
-
-------------
-
-Another packaging option is to utilize a `setup.py` file, as shown below:
+<details>
+<summary><code>setup.py</code></summary>
 
 ```python
-# setup.py
-
 from setuptools import setup
 
 setup(
@@ -151,21 +119,65 @@ setup(
 ```
 
 > **Note:**
-> Below is a list of explanations of the variables that we are passing to the `setup` function in the `setup.py` example above:
-> 
-> * **name** This is the name of the package that contains your subcommand. This is also how others will find your subcommand package if you choose to upload it to PyPI.
-> * **install_requires** These are all of the dependencies for your project. This should at a minimum always contain the version of `conda` for which your plugin is compatible with.
-> * **entry_points** The entry point you list here is how `conda` will discover your plugin and should point to the file containing the `conda.plugins.register` hook. In our simple use case, it points to the `string_art` module contained within the `string_art.py` file. For more complex examples where your module is contained within a folder, it may look more like `my_module.main` or `my_modules.plugin_hooks`.
-> * **py_modules** The `py_modules` variables lets `setup` know exactly where to look for all of the modules that comprise your plugin source code.
+> * `name` This is the name of the package that contains your subcommand. This is also how others will find your subcommand package if you choose to upload it to PyPI.
+> * `install_requires` These are all of the dependencies for your project. This should at a minimum always contain the version of `conda` for which your plugin is compatible with.
+> * `entry_points` The entry point you list here is how `conda` will discover your plugin and should point to the file containing the `conda.plugins.register` hook. In our simple use case, it points to the `string_art` module contained within the `string_art.py` file. For more complex examples where your module is contained within a folder, it may look more like `my_module.main` or `my_modules.plugin_hooks`.
+> * `py_modules` The `py_modules` variables lets `setup` know exactly where to look for all of the modules that comprise your plugin source code.
+>
+> For more information on `setup.py` see the [Python setup script documentation][setup.py docs].
 
-The custom `string-art` subcommand plugin can be installed via the `setup.py` example shown above by running the following from the directory where the `setup.py` file is located:
-
-```bash
-$ python -m pip install --editable .
-```
+</details>
 
 > **Note:**
 > For more information about entry points specification in general, please read [PyPA's entrypoints documentation][entrypoints docs].
+
+### Development/Editable Install
+
+The custom `string-art` subcommand plugin can be installed as an editable install using either the `pyproject.toml` or `setup.py`:
+
+```bash
+$ python -m pip install --editable ./
+```
+
+### Conda Install
+
+When you're ready to distribute your custom `string-art` subcommand plugin you can package it as a conda package:
+
+<details>
+<summary><code>recipe/meta.yaml</code></summary>
+
+```yaml
+package:
+  name: string-art
+  version: 1.0
+
+source:
+  path: ../
+
+build:
+  script: $PYTHON -m pip install --no-deps .
+
+requirements:
+  host:
+    - python >=3.7
+
+  run:
+    - conda
+    - python >=3.7
+    - art
+
+about:
+  home: https://github.com/conda/conda-plugin-template
+  license: BSD-3-Clause
+  license_file: LICENSE
+  summary: My string art subcommand plugin
+```
+
+</details>
+
+```bash
+$ conda build ./recipe
+```
 
 ## The subcommand output
 
