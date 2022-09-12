@@ -3,14 +3,14 @@ requires = ["setuptools>=61.0", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "string-art"
+name = "ascii-graph"
 version = "1.0"
-description = "My string art subcommand plugin"
+description = "My ascii graph subcommand plugin"
 requires-python = ">=3.7"
-dependencies = ["conda", "art"]
+dependencies = ["conda", "sympy"]
 
 [tools.setuptools]
-py_modules=["string_art"]
+py_modules=["ascii_graph"]
 
 [project.entry-points.conda]
-string-art = "string_art"
+ascii-graph = "ascii_graph"

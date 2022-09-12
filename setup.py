@@ -1,11 +1,11 @@
 from setuptools import setup
 
 setup(
-    name="string-art",
+    name="ascii-graph",
     version="1.0",
-    description="My string art subcommand plugin",
+    description="My ascii graph subcommand plugin",
     python_requires=">=3.7",
-    install_requires=["conda", "art"],
-    py_modules=["string_art"],
-    entry_points={"conda": ["string-art = string_art"]},
+    install_requires=["conda", "sympy"],
+    py_modules=["ascii_graph"],
+    entry_points={"conda": ["ascii-graph = ascii_graph"]},
 )

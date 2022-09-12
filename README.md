@@ -8,7 +8,7 @@
 
 # Custom Subcommand Plugin Tutorial
 
-In this tutorial, we will create a new `conda` subcommand that can convert a string into ASCII art.
+In this tutorial, we will create a new `conda` subcommand that can convert a string of three comma-separated numbers and prints out an ASCII graph.
 
 To follow along with this guide make sure you have the latest conda and conda-build installed:
 
@@ -24,44 +24,52 @@ Set up your working directory and files as shown below (or create a new repo usi
 conda-plugin-template/
 ├── recipe/
 │   └── meta.yaml
-├── string_art.py
+├── ascii_graph.py
 └── pyproject.toml (or setup.py)
 ```
 
 ## The custom subcommand module
 
-The following module implements a function, `string_art` (where a specified string gets converted into ASCII art), and registers it with the plugin manager hook called `conda_subcommands` using the `@conda.plugins.register` decorator.
+The following module implements a function, `ascii_graph` (where a set of three integers gets converted into an ascii graph), and registers it with the plugin manager hook called `conda_subcommands` using the `@conda.plugins.register` decorator.
 
 ```python
-# string_art.py
+# ascii_graph.py
 
-from art import text2art
-from typing import Sequence
+from sympy import symbols
+from sympy.plotting import textplot
 
 import conda.plugins
 
 
-def string_art(args: Sequence[str]) -> None:
-      # if using a multi-word string with spaces, make sure to wrap it in quote marks
-      output = "".join(args)
-      string_art = text2art(output)
+def ascii_graph(coordinates: str):
+    try:
+        to_graph = [float(x) for x in coordinates[0].split(',')]
+    except ValueError:
+        print("You can only graph numbers!")
+        raise SystemExit
 
-      print(string_art)
+    if len(to_graph) != 3:
+        print("Please input a string of three numbers to graph.")
+        raise SystemExit
+
+    s = symbols('s')
+    x, y, z = [to_graph[i] for i in (0, 1, 2)]
+    textplot(s**x,y,z)
 
 
 @conda.plugins.register
-def conda_subcommands() -> None:
-      yield conda.plugins.CondaSubcommand(
-         name="string-art",
-         summary="tutorial subcommand that prints a string as ASCII art",
-         action=string_art,
-      )
+def conda_subcommands():
+    yield conda.plugins.CondaSubcommand(
+        name="ascii-graph",
+        summary="tutorial subcommand that takes in 3 ints and prints out an ascii graph",
+        action=ascii_graph,
+    )
 ```
 
 
 ## Packaging the custom subcommand
 
-In order to install the `conda string-art` subcommand we will need to configure a Python build system. You can either use the [PEP 621][pep 621] compliant `pyproject.toml` or the classic `setup.py`:
+In order to install the `conda ascii-graph` subcommand we will need to configure a Python build system. You can either use the [PEP 621][pep 621] compliant `pyproject.toml` or the classic `setup.py`:
 
 <details>
 <summary><code>pyproject.toml</code></summary>
@@ -72,17 +80,17 @@ requires = ["setuptools>=61.0", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "string-art"
+name = "ascii-graph"
 version = "1.0"
-description = "My string art subcommand plugin"
+description = "My ascii graph subcommand plugin"
 requires-python = ">=3.7"
-dependencies = ["conda", "art"]
+dependencies = ["conda", "sympy"]
 
 [tools.setuptools]
-py_modules=["string_art"]
+py_modules=["ascii_graph"]
 
 [project.entry-points.conda]
-string-art = "string_art"
+ascii-graph = "ascii_graph"
 ```
 
 > **Note:**
@@ -108,20 +116,20 @@ string-art = "string_art"
 from setuptools import setup
 
 setup(
-    name="string-art",
+    name="ascii-graph",
     version="1.0",
-    description="My string art subcommand plugin",
+    description="My ascii graph subcommand plugin",
     python_requires=">=3.7",
-    install_requires=["conda", "art"],
-    py_modules=["string_art"],
-    entry_points={"conda": ["string-art = string_art"]},
+    install_requires=["conda", "sympy"],
+    py_modules=["ascii_graph"],
+    entry_points={"conda": ["ascii-graph = ascii_graph"]},
 )
 ```
 
 > **Note:**
 > * `name` This is the name of the package that contains your subcommand. This is also how others will find your subcommand package if you choose to upload it to PyPI.
 > * `install_requires` These are all of the dependencies for your project. This should at a minimum always contain the version of `conda` for which your plugin is compatible with.
-> * `entry_points` The entry point you list here is how `conda` will discover your plugin and should point to the file containing the `conda.plugins.register` hook. In our simple use case, it points to the `string_art` module contained within the `string_art.py` file. For more complex examples where your module is contained within a folder, it may look more like `my_module.main` or `my_modules.plugin_hooks`.
+> * `entry_points` The entry point you list here is how `conda` will discover your plugin and should point to the file containing the `conda.plugins.register` hook. In our simple use case, it points to the `ascii_graph` module contained within the `ascii_graph.py` file. For more complex examples where your module is contained within a folder, it may look more like `my_module.main` or `my_modules.plugin_hooks`.
 > * `py_modules` The `py_modules` variables lets `setup` know exactly where to look for all of the modules that comprise your plugin source code.
 >
 > For more information on `setup.py` see the [Python setup script documentation][setup.py docs].
@@ -133,7 +141,7 @@ setup(
 
 ### Development/Editable Install
 
-The custom `string-art` subcommand plugin can be installed as an editable install using either the `pyproject.toml` or `setup.py`:
+The custom `ascii-graph` subcommand plugin can be installed as an editable install using either the `pyproject.toml` or `setup.py`:
 
 ```bash
 $ python -m pip install --editable ./
@@ -141,7 +149,7 @@ $ python -m pip install --editable ./
 
 ### Conda Install
 
-When you're ready to distribute your custom `string-art` subcommand plugin you can package it as a conda package:
+When you're ready to distribute your custom `ascii-graph` subcommand plugin you can package it as a conda package:
 
 <details>
 <summary><code>recipe/meta.yaml</code></summary>
@@ -198,23 +206,41 @@ command
 [...output shortened...]
 
 conda commands available from other packages:
-string-art - tutorial subcommand that prints a string as ASCII art
+ascii-graph - A subcommand that takes a string of three comma-separated numbers and prints out an ascii graph
 
 conda commands available from other packages (legacy):
 content-trust
 env
 ```
 
-Running `conda string-art [string]` will result in the following output:
+Running `conda ascii [comma-separated string of three numbers]` will result in the following output:
 
 ```bash
-$ conda string-art "testing 123"
- _               _    _                 _  ____   _____
-| |_   ___  ___ | |_ (_) _ __    __ _  / ||___ \ |___ /
-| __| / _ \/ __|| __|| || '_ \  / _` | | |  __) |  |_ \
-| |_ |  __/\__ \| |_ | || | | || (_| | | | / __/  ___) |
- \__| \___||___/ \__||_||_| |_| \__, | |_||_____||____/
-                                |___/
+$ conda ascii-graph "3, -4, 6.878"
+
+
+330 |                                                      .
+    |
+    |                                                     .
+    |                                                    /
+    |                                                   /
+    |                                                  .
+    |
+    |                                                 .
+    |                                                /
+    |                                              ..
+135 |---------------------------------------------/---------
+    |                                            /
+    |                                          ..
+    |                                        ..
+    |                                      ..
+    |                                   ...
+    |                              .....
+    |         .....................
+    |     ....
+    |  ...
+-60 |_______________________________________________________
+      -4                         1.439                      6.878
 ```
 
 Congratulations, you've just implemented your first custom `conda` subcommand plugin!
