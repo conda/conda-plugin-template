@@ -8,8 +8,7 @@ def ascii_graph(coordinates: str):
     try:
         to_graph = [float(x) for x in coordinates[0].split(',')]
     except ValueError:
-        print("You can only graph numbers!")
-        raise SystemExit
+        raise SystemExit("You can only graph numbers!")
 
     if len(to_graph) != 3:
         print("Please input a string of three numbers to graph.")
