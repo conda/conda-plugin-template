@@ -8,7 +8,7 @@
 
 # Custom Subcommand Plugin Tutorial
 
-In this tutorial, we will create a new `conda` subcommand that can convert a string of three comma-separated numbers and prints out an ASCII graph.
+In this tutorial, we will create a new `conda` subcommand that takes an input of three coordinates and prints out an ASCII graph.
 
 To follow along with this guide make sure you have the latest conda and conda-build installed:
 
@@ -30,7 +30,7 @@ conda-plugin-template/
 
 ## The custom subcommand module
 
-The following module implements a function, `ascii_graph` (where a set of three integers gets converted into an ascii graph), and registers it with the plugin manager hook called `conda_subcommands` using the `@conda.plugins.register` decorator.
+The following module implements a function, `ascii_graph` (where a set of three numbers gets converted into an ascii graph), and registers it with the plugin manager hook called `conda_subcommands` using the `@conda.plugins.register` decorator.
 
 ```python
 # ascii_graph.py
@@ -38,32 +38,30 @@ The following module implements a function, `ascii_graph` (where a set of three 
 from sympy import symbols
 from sympy.plotting import textplot
 
+import argparse
 import conda.plugins
 
 
-def ascii_graph(coordinates: str):
-    try:
-        to_graph = [float(x) for x in coordinates[0].split(',')]
-    except ValueError:
-        print("You can only graph numbers!")
-        raise SystemExit
+def ascii_graph(argv: list):
+    parser = argparse.ArgumentParser("conda ascii-graph")
 
-    if len(to_graph) != 3:
-        print("Please input a string of three numbers to graph.")
-        raise SystemExit
+    parser.add_argument("x", type=float, help="First coordinate to graph")
+    parser.add_argument("y", type=float, help="Second coordinate to graph")
+    parser.add_argument("z", type=float, help="Third coordinate to graph")
+
+    args = parser.parse_args(argv)
 
     s = symbols('s')
-    x, y, z = [to_graph[i] for i in (0, 1, 2)]
-    textplot(s**x,y,z)
+    textplot(s**args.x,args.y,args.z)
 
 
 @conda.plugins.register
 def conda_subcommands():
     yield conda.plugins.CondaSubcommand(
         name="ascii-graph",
-        summary="tutorial subcommand that takes in 3 ints and prints out an ascii graph",
+        summary="A subcommand that takes three coordinates and prints out an ascii graph",
         action=ascii_graph,
-    )
+        )
 ```
 
 
@@ -156,7 +154,7 @@ When you're ready to distribute your custom `ascii-graph` subcommand plugin you 
 
 ```yaml
 package:
-  name: string-art
+  name: ascii-graph
   version: 1.0
 
 source:
@@ -178,7 +176,7 @@ about:
   home: https://github.com/conda/conda-plugin-template
   license: BSD-3-Clause
   license_file: LICENSE
-  summary: My string art subcommand plugin
+  summary: My ascii graph subcommand plugin
 ```
 
 </details>
@@ -206,17 +204,17 @@ command
 [...output shortened...]
 
 conda commands available from other packages:
-ascii-graph - A subcommand that takes a string of three comma-separated numbers and prints out an ascii graph
+ascii-graph - A subcommand that takes three coordinates and prints out an ascii graph
 
 conda commands available from other packages (legacy):
 content-trust
 env
 ```
 
-Running `conda ascii [comma-separated string of three numbers]` will result in the following output:
+Running `conda ascii [three numbers/floats]` will result in the following output:
 
 ```bash
-$ conda ascii-graph "3, -4, 6.878"
+$ conda ascii-graph 3 -4 6.878
 
 
 330 |                                                      .

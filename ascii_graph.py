@@ -1,33 +1,27 @@
 from sympy import symbols
 from sympy.plotting import textplot
 
+import argparse
 import conda.plugins
 
 
-def ascii_graph(coordinates: str):
-    try:
-        to_graph = [float(x) for x in coordinates[0].split(',')]
-    except:
-        raise SystemExit('You can only graph numbers!\n'
-              '(the numbers must be contained in a comma-separated'
-              ' string, e.g., "-4, 5, 6.37")'
-        )
+def ascii_graph(argv: list):
+    parser = argparse.ArgumentParser("conda ascii-graph")
 
-    if len(to_graph) != 3:
-        raise SystemExit('Please input a string of exactly three numbers to graph!\n'
-              '(the numbers must be comma-separated and wrapped'
-              ' with quotation marks, e.g., "-4, 5, 6.37")'
-        )
+    parser.add_argument("x", type=float, help="First coordinate to graph")
+    parser.add_argument("y", type=float, help="Second coordinate to graph")
+    parser.add_argument("z", type=float, help="Third coordinate to graph")
+
+    args = parser.parse_args(argv)
 
     s = symbols('s')
-    x, y, z = [to_graph[i] for i in (0, 1, 2)]
-    textplot(s**x,y,z)
+    textplot(s**args.x,args.y,args.z)
 
 
 @conda.plugins.register
 def conda_subcommands():
     yield conda.plugins.CondaSubcommand(
         name="ascii-graph",
-        summary="A subcommand that takes a string of three comma-separated numbers and prints out an ascii graph",
+        summary="A subcommand that takes three coordinates and prints out an ascii graph",
         action=ascii_graph,
-    )
+        )
