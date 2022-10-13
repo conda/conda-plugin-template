@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "multiply"
 version = "1.0"
-description = "A subcommand that multiplies two integers"
+description = "A subcommand written in Rust that multiplies two integers"
 requires-python = ">=3.7"
 dependencies = ["conda", "maturin"]
 

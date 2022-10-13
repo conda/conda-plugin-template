@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "temp-converter"
 version = "1.0"
-description = "A subcommand that multiplies two ints using Rust"
+description = "A custom subcommand written in C that converts Celsius to Fahrenheit"
 requires-python = ">=3.7"
 dependencies = ["conda"]
 

@@ -1,4 +1,4 @@
-from ctypes import *
+from ctypes import CDLL
 import conda.plugins
 
 
@@ -12,6 +12,6 @@ def conda_temp_converter(*args, **kwargs):
 def conda_subcommands():
     yield conda.plugins.CondaSubcommand(
         name="temp-converter",
-        summary="A subcommand that converts Celsius to Fahrenheit",
+        summary="A custom subcommand written in C that converts Celsius to Fahrenheit",
         action=conda_temp_converter,
     )
