@@ -1,0 +1,23 @@
+package:
+  name: temp-converter
+  version: 1.0
+
+source:
+  path: ../
+
+build:
+  script: $PYTHON -m pip install --no-deps .
+
+requirements:
+  host:
+    - python >=3.7
+
+  run:
+    - conda
+    - python >=3.7
+
+about:
+  home: https://github.com/conda/conda-plugin-template
+  license: BSD-3-Clause
+  license_file: LICENSE
+  summary: A custom subcommand written in C that converts Celsius to Fahrenheit

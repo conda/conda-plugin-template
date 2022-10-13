@@ -5,12 +5,13 @@
 [pep 621]: https://peps.python.org/pep-0621/
 [maturin]: https://github.com/PyO3/maturin
 [pyo3]: https://github.com/PyO3/pyo3
+[pluggy docs]: https://pluggy.readthedocs.io/en/stable/index.html
 
-# Custom Subcommand Plugin Tutorial Written in Rust
+# Custom `conda` Subcommand Plugin Tutorial Written in Rust
 
-In this tutorial, we will create a new `conda` subcommand in Rust that multiplies two integers.
+In this tutorial, we will create a new `conda` subcommand written in Rust that multiplies two integers.
 
-To follow along with this guide make sure you have the latest conda and conda-build installed:
+To follow along with this guide, make sure you have the latest conda and conda-build installed:
 
 ```bash
 (base) $ conda update conda conda-build
@@ -57,7 +58,7 @@ Once the Rust program is set up as shown in the example above, the Python module
 
 ## The custom subcommand module (the Python side of the subcommand plugin)
 
-The `rust_plugin.py` module in this example imports the `rustiply` function from `src.lib.rs` and calls it inside of the function `conda_rustiply()` (where two numbers multiplied) and then registers the `conda_rustiply()` via the plugin manager hook called `conda_subcommands` using the `@conda.plugins.register` decorator:
+The `rust_plugin.py` module in this example imports the `rustiply` function from `src.lib.rs` and calls it inside of the function `conda_rustiply()` (where two numbers multiplied) and then registers `conda_rustiply()` via the plugin manager hook called `conda_subcommands` using the `@conda.plugins.register` decorator:
 
 ```python
 # rust_plugin.py
@@ -225,7 +226,7 @@ $ conda multiply 5 4
 The product of 5 * 4 is: 20
 ```
 
-Congratulations, you've successfully implemented a `conda` subcommand plugin written in Rust!
+Congratulations, you've successfully implemented a `conda` subcommand plugin written in Rust! For further reference on how the plugin system works, check out the [official `pluggy` docs][pluggy docs].
 
 > **Note:**
 > Whenever you develop your own custom plugins, please be sure to [apply the appropriate license][licenses].
