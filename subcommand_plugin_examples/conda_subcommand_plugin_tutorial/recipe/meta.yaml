@@ -1,5 +1,5 @@
 package:
-  name: string-art
+  name: ascii-graph
   version: 1.0
 
 source:
@@ -21,4 +21,4 @@ about:
   home: https://github.com/conda/conda-plugin-template
   license: BSD-3-Clause
   license_file: LICENSE
-  summary: My string art subcommand plugin
+  summary: My ascii graph subcommand plugin
