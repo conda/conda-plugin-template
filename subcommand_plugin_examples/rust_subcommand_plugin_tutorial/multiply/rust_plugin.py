@@ -20,6 +20,6 @@ def conda_rustiply(argv: list):
 def conda_subcommands():
     yield conda.plugins.CondaSubcommand(
         name="multiply",
-        summary="A subcommand that multiplies two integers",
+        summary="A subcommand written in Rust that multiplies two integers",
         action=conda_rustiply,
     )

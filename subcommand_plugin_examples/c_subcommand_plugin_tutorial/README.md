@@ -5,9 +5,9 @@
 [pep 621]: https://peps.python.org/pep-0621/
 [pluggy docs]: https://pluggy.readthedocs.io/en/stable/index.html
 
-# Custom `conda` Subcommand Plugin Tutorial Written in C
+# Custom conda Subcommand Plugin Tutorial Written in C
 
-In this tutorial, we will create a new `conda` subcommand written in C that converts Celsius to Fahrenheit.
+In this tutorial, we will create a new conda subcommand written in C that converts Celsius to Fahrenheit.
 
 To follow along with this guide, make sure you have the latest conda and conda-build installed:
 
@@ -79,9 +79,9 @@ c_subcommand_plugin/
 
 ## The custom subcommand module (the Python side of the subcommand plugin)
 
-In the Python program (shown in the example below), a `ctypes.CDLL` instance will be created from the shared `.so` file that was created in the previous step.
+In the Python program (shown in the example below), a `ctypes.CDLL` instance will be created from the shared `.so` file that was generated in the previous step.
 
-The `temp_conv_c.py` module can then call the C function using the format `CDLL(so_file)` from inside of the `conda_temp_converter()` function. Once that is done, then the `conda_temp_converter()` function can be registered via the plugin manager hook called `conda_subcommands` using the `@conda.plugins.register` decorator:
+The `temp_conv_c.py` module can then call the C function using the format `CDLL(so_file)` from inside of the `conda_temp_converter()` function. Once that code is in place, then the `conda_temp_converter()` function can be registered via the plugin manager hook called `conda_subcommands` using the `@conda.plugins.register` decorator:
 
 ```python
 # temp_conv_c.py
@@ -131,7 +131,6 @@ temp-converter = "temp_conv_c"
 <details>
 <summary><code>pyproject.toml details</code></summary>
 
-> **Note:**
 > #### `[build-system]`
 > - `requires` This is a list of requirement specifiers for build-time dependencies of a package.
 > - `build-backend` Build backends have the ability to accept configuration settings, which can change the way that the package building is handled.
@@ -237,7 +236,7 @@ Enter the temperature in Celsius:
 
 ```
 
-Congratulations, you've successfully implemented a `conda` subcommand plugin written in C! For further reference on how the plugin system works, check out the [official `pluggy` docs][pluggy docs].
+Congratulations, you've successfully implemented a conda subcommand plugin written in C! For further reference on how the plugin system works, check out the [official `pluggy` docs][pluggy docs].
 
 
 > **Note:**

@@ -7,9 +7,9 @@
 [pyo3]: https://github.com/PyO3/pyo3
 [pluggy docs]: https://pluggy.readthedocs.io/en/stable/index.html
 
-# Custom `conda` Subcommand Plugin Tutorial Written in Rust
+# Custom conda Subcommand Plugin Tutorial Written in Rust
 
-In this tutorial, we will create a new `conda` subcommand written in Rust that multiplies two integers.
+In this tutorial, we will create a new conda subcommand written in Rust that multiplies two integers.
 
 To follow along with this guide, make sure you have the latest conda and conda-build installed:
 
@@ -118,7 +118,6 @@ multiply = "rust_plugin"
 <details>
 <summary><code>pyproject.toml details</code></summary>
 
-> **Note:**
 > #### `[build-system]`
 > - `requires` This is a list of requirement specifiers for build-time dependencies of a package.
 > - `build-backend` Build backends have the ability to accept configuration settings, which can change the way that the package building is handled.
@@ -146,7 +145,7 @@ The custom `multiply` subcommand plugin can be installed as an editable install 
 $ pip install -e .
 ```
 
-...and then run:
+...and then make sure to run:
 
 ```
 $ maturin develop
@@ -226,7 +225,7 @@ $ conda multiply 5 4
 The product of 5 * 4 is: 20
 ```
 
-Congratulations, you've successfully implemented a `conda` subcommand plugin written in Rust! For further reference on how the plugin system works, check out the [official `pluggy` docs][pluggy docs].
+Congratulations, you've successfully implemented a conda subcommand plugin written in Rust! For further reference on how the plugin system works, check out the [official `pluggy` docs][pluggy docs].
 
 > **Note:**
 > Whenever you develop your own custom plugins, please be sure to [apply the appropriate license][licenses].
