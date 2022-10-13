@@ -1,4 +1,4 @@
-[template]: https://github.com/conda/conda-plugin-template/generate
+[template]: https://github.com/conda/conda-plugin-template/subcommand_plugin_examples/conda_subcommand_plugin_tutorial/generate
 [pyproject.toml docs]: https://packaging.python.org/en/latest/tutorials/packaging-projects/#creating-pyproject-toml
 [entrypoints docs]: https://packaging.python.org/en/latest/specifications/entry-points/
 [pluggy docs]: https://pluggy.readthedocs.io/en/stable/index.html#loading-setuptools-entry-points
@@ -173,7 +173,7 @@ requirements:
     - art
 
 about:
-  home: https://github.com/conda/conda-plugin-template
+  home: https://github.com/conda/conda-plugin-template/subcommand_plugin_examples/conda_subcommand_plugin_tutorial
   license: BSD-3-Clause
   license_file: LICENSE
   summary: My ascii graph subcommand plugin
