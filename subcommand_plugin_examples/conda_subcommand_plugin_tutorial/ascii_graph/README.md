@@ -1,16 +1,16 @@
 [template]: https://github.com/conda/conda-plugin-template/subcommand_plugin_examples/conda_subcommand_plugin_tutorial/generate
 [pyproject.toml docs]: https://packaging.python.org/en/latest/tutorials/packaging-projects/#creating-pyproject-toml
 [entrypoints docs]: https://packaging.python.org/en/latest/specifications/entry-points/
-[pluggy docs]: https://pluggy.readthedocs.io/en/stable/index.html#loading-setuptools-entry-points
+[pluggy docs]: https://pluggy.readthedocs.io/en/stable/index.html
 [licenses]: https://docs.conda.io/projects/conda/en/latest/dev-guide/plugin-api/index.html#a-note-on-licensing
 [pep 621]: https://peps.python.org/pep-0621/
 [setup.py docs]: https://docs.python.org/3/distutils/setupscript.html
 
-# Custom Subcommand Plugin Tutorial
+# Custom `conda` Subcommand Plugin Tutorial
 
 In this tutorial, we will create a new `conda` subcommand that takes an input of three coordinates and prints out an ASCII graph.
 
-To follow along with this guide make sure you have the latest conda and conda-build installed:
+To follow along with this guide, make sure you have the latest conda and conda-build installed:
 
 ```bash
 (base) $ conda update conda conda-build
@@ -142,7 +142,7 @@ setup(
 The custom `ascii-graph` subcommand plugin can be installed as an editable install using either the `pyproject.toml` or `setup.py`:
 
 ```bash
-$ python -m pip install --editable ./
+$ pip install -e .
 ```
 
 ### Conda Install
@@ -241,7 +241,7 @@ $ conda ascii-graph 3 -4 6.878
       -4                         1.439                      6.878
 ```
 
-Congratulations, you've just implemented your first custom `conda` subcommand plugin!
+Congratulations, you've just implemented your first custom `conda` subcommand plugin! For further reference on how the plugin system works, check out the [official `pluggy` docs][pluggy docs].
 
 > **Note:**
 > Whenever you develop your own custom plugins, please be sure to [apply the appropriate license][licenses].
