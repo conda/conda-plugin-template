@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=61.0", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "multiply"
+version = "1.0"
+description = "A subcommand that multiplies two integers"
+requires-python = ">=3.7"
+dependencies = ["conda", "maturin"]
+
+[tools.setuptools]
+py_modules=["multiply"]
+
+[project.entry-points.conda]
+multiply = "rust_plugin"
