@@ -1,6 +1,7 @@
 # `conda` Subcommand Plugin Examples
 
-## C Plugins
+## C Plugins 
+<!-- Add link -->
 
 From the top-level directory (_i.e._, `conda-plugin-template/subcommand_plugin_examples/c_subcommand_plugin_tutorial/temp_converter/`), run:
 
@@ -19,7 +20,7 @@ In the Python portion of the plugin (_i.e._, `conda-plugin-template/subcommand_p
 
 
 ## Python Plugins
-
+<!-- Add link -->
 From the top-level directory (_i.e._, `conda-plugin-template/subcommand_plugin_examples/conda_subcommand_plugin_tutorial/`) run the following to execute an editable install via `pip`:
 
 ```
@@ -27,7 +28,7 @@ $ pip install -e .
 ```
 
 ## Rust Plugins
-
+<!-- Add link -->
 > **Note:** Make sure you have `maturin` installed.
 
 From the top-level directory (_i.e._, `conda-plugin-template/subcommand_plugin_examples/rust_subcommand_plugin_tutorial/multiply/`) run the following to execute an editable install via `pip`:
