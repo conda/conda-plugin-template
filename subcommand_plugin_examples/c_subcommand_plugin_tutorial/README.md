@@ -12,12 +12,12 @@ In this tutorial, we will create a new conda subcommand written in C that conver
 To follow along with this guide, make sure you have the latest conda and conda-build installed:
 
 ```bash
-(base) $ conda update conda conda-build
+$ conda update conda conda-build pip
 ```
 
 ## Project directory structure
 
-Set up your working directory and files as shown below (or create a new repo using this [template][template]):
+Set up your working directory and files as shown below (or create a new repository using this [template][template]):
 
 ```
 c_subcommand_plugin/
@@ -107,7 +107,7 @@ def conda_subcommands():
 
 ## Packaging the custom subcommand
 
-In order to install the `conda temp-converter` custom subcommand we will need to configure a Python build system. You can either use the [PEP 621][pep 621] compliant `pyproject.toml` or alternatively `setup.py` can be used (not shown in this tutorial):
+In order to install the `conda temp-converter` custom subcommand, we will need to configure a Python build system. You can either use the [PEP 621][pep 621] compliant `pyproject.toml` or alternatively `setup.py` can be used (not shown in this tutorial):
 
 ```toml
 [build-system]
@@ -150,7 +150,7 @@ temp-converter = "temp_conv_c"
 > **Note:**
 > For more information about entry points specification in general, please read [PyPA's entrypoints documentation][entrypoints docs].
 
-### Development/Editable Install
+### Development/editable install
 
 The custom `temp-converter` subcommand plugin can be installed as an editable install by running the following command:
 
@@ -236,7 +236,7 @@ Enter the temperature in Celsius:
 
 ```
 
-Congratulations, you've successfully implemented a conda subcommand plugin written in C! For further reference on how the plugin system works, check out the [official `pluggy` docs][pluggy docs].
+Congratulations! 🎉 You've successfully implemented a conda subcommand plugin written in C! For further reference on how the plugin system works, check out the [official `pluggy` docs][pluggy docs].
 
 
 > **Note:**

@@ -14,12 +14,12 @@ In this tutorial, we will create a new conda subcommand written in Rust that mul
 To follow along with this guide, make sure you have the latest conda and conda-build installed:
 
 ```bash
-(base) $ conda update conda conda-build
+$ conda update conda conda-build pip
 ```
 
 ## Project directory structure
 
-Set up your working directory and files as shown below (or create a new repo using this [template][template]):
+Set up your working directory and files as shown below (or create a new repository using this [template][template]):
 
 ```
 rust_subcommand_plugin/
@@ -137,7 +137,7 @@ multiply = "rust_plugin"
 > **Note:**
 > For more information about entry points specification in general, please read [PyPA's entrypoints documentation][entrypoints docs].
 
-### Development/Editable Install
+### Development/editable install
 
 The custom `multiply` subcommand plugin can be installed as an editable install by running the following from the directory where `pyproject.toml` is located:
 
@@ -225,7 +225,7 @@ $ conda multiply 5 4
 The product of 5 * 4 is: 20
 ```
 
-Congratulations, you've successfully implemented a conda subcommand plugin written in Rust! For further reference on how the plugin system works, check out the [official `pluggy` docs][pluggy docs].
+Congratulations! 🎉 You've successfully implemented a conda subcommand plugin written in Rust! For further reference on how the plugin system works, check out the [official `pluggy` docs][pluggy docs].
 
 > **Note:**
 > Whenever you develop your own custom plugins, please be sure to [apply the appropriate license][licenses].
