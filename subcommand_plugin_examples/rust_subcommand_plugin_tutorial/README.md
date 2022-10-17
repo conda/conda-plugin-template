@@ -1,6 +1,12 @@
-[template]: https://github.com/conda/conda-plugin-template/subcommand_plugin_examples/rust_subcommand_plugin_tutorial/generate
+[template]: https://github.com/conda/conda-plugin-template/generate
+[pyo3 docs]: https://pyo3.rs/latest/
 [pyproject.toml docs]: https://packaging.python.org/en/latest/tutorials/packaging-projects/#creating-pyproject-toml
 [entrypoints docs]: https://packaging.python.org/en/latest/specifications/entry-points/
+[editable install doc]: https://pip.pypa.io/en/stable/topics/local-project-installs/#editable-installs
+[maturin develop docs]: https://www.maturin.rs/develop.html
+[build conda packages]: https://docs.conda.io/projects/conda-build/en/latest/user-guide/tutorials/build-pkgs.html
+[upload to anaconda.org]: https://docs.anaconda.com/anacondaorg/user-guide/tasks/work-with-packages/#uploading-packages
+[anaconda.org site]: https://anaconda.org/
 [licenses]: https://docs.conda.io/projects/conda/en/latest/dev-guide/plugin-api/index.html#a-note-on-licensing
 [pep 621]: https://peps.python.org/pep-0621/
 [maturin]: https://github.com/PyO3/maturin
@@ -16,6 +22,8 @@ To follow along with this guide, make sure you have the latest conda and conda-b
 ```bash
 $ conda update conda conda-build pip
 ```
+
+It is also recommended to get familiar with the [`pyo3` project][pyo3] by checking out their [documentation][pyo3 docs].
 
 ## Project directory structure
 
@@ -90,7 +98,7 @@ def conda_subcommands():
     )
 ```
 
-## Packaging the custom subcommand
+## Packaging the custom subcommand using `pyproject.toml`
 
 In order to install the `conda multiply` subcommand we will need to configure a Python build system. You can either use the [PEP 621][pep 621] compliant `pyproject.toml` or alternatively `setup.py` can be used (not shown in this tutorial).
 
@@ -145,13 +153,17 @@ The custom `multiply` subcommand plugin can be installed as an editable install 
 $ pip install -e .
 ```
 
-...and then make sure to run:
+This creates an [editable installation][editable install doc], which enables changes to be made to the `rust_plugin.py` file and have changes be reflected without needing to re-install the module.
+
+After running the above, make sure to run:
 
 ```
 $ maturin develop
 ```
 
-### Conda Install
+This command builds the Rust crate and installs it as a Python module directly in your environment for local development. For more information on the `maturin develop` command, please read the [corresponding documentation][maturin develop docs].
+
+### Packaging the custom subcommand using `conda-build`
 
 When you're ready to distribute your custom `multiply` subcommand plugin, you can package it as a conda package:
 
@@ -190,6 +202,8 @@ about:
 ```bash
 $ conda build ./recipe
 ```
+
+There is more detailed information available via the [`conda-build` documentation][build conda packages] on how to build conda packages from scratch. Please also check out [this documentation page][upload to anaconda.org] if you'd like to learn how to upload your subcommand package to [anaconda.org][anaconda.org site].
 
 ## The subcommand output
 

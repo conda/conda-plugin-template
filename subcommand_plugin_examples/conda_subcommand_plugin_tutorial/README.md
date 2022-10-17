@@ -1,6 +1,10 @@
-[template]: https://github.com/conda/conda-plugin-template/subcommand_plugin_examples/conda_subcommand_plugin_tutorial/generate
+[template]: https://github.com/conda/conda-plugin-template/generate
 [pyproject.toml docs]: https://packaging.python.org/en/latest/tutorials/packaging-projects/#creating-pyproject-toml
 [entrypoints docs]: https://packaging.python.org/en/latest/specifications/entry-points/
+[editable install doc]: https://pip.pypa.io/en/stable/topics/local-project-installs/#editable-installs
+[build conda packages]: https://docs.conda.io/projects/conda-build/en/latest/user-guide/tutorials/build-pkgs.html
+[upload to anaconda.org]: https://docs.anaconda.com/anacondaorg/user-guide/tasks/work-with-packages/#uploading-packages
+[anaconda.org site]: https://anaconda.org/
 [pluggy docs]: https://pluggy.readthedocs.io/en/stable/index.html
 [licenses]: https://docs.conda.io/projects/conda/en/latest/dev-guide/plugin-api/index.html#a-note-on-licensing
 [pep 621]: https://peps.python.org/pep-0621/
@@ -65,7 +69,7 @@ def conda_subcommands():
 ```
 
 
-## Packaging the custom subcommand
+## Packaging the custom subcommand using `pyproject.toml`
 
 In order to install the `conda ascii-graph` subcommand we will need to configure a Python build system. You can either use the [PEP 621][pep 621] compliant `pyproject.toml` or the classic `setup.py`:
 
@@ -145,7 +149,9 @@ The custom `ascii-graph` subcommand plugin can be installed as an editable insta
 $ pip install -e .
 ```
 
-### Conda Install
+To learn more about editable installs, please read the [corresponding pip documentation page][editable install doc].
+
+### Packaging the custom subcommand using `conda-build`
 
 When you're ready to distribute your custom `ascii-graph` subcommand plugin you can package it as a conda package:
 
@@ -185,6 +191,7 @@ about:
 $ conda build ./recipe
 ```
 
+There is more detailed information available via the [`conda-build` documentation][build conda packages] on how to build conda packages from scratch. Please also check out [this documentation page][upload to anaconda.org] if you'd like to learn how to upload your subcommand package to [anaconda.org][anaconda.org site].
 ## The subcommand output
 
 Once the subcommand plugin is successfully installed or registered, the help text will display it as an additional option available from other packages:
@@ -241,7 +248,7 @@ $ conda ascii-graph 3 -4 6.878
       -4                         1.439                      6.878
 ```
 
-Congratulations, you've just implemented your first custom conda subcommand plugin! For further reference on how the plugin system works, check out the [official `pluggy` docs][pluggy docs].
+Congratulations! 🎉 You've just implemented your first custom conda subcommand plugin! For further reference on how the plugin system works, check out the [official `pluggy` docs][pluggy docs].
 
 > **Note:**
 > Whenever you develop your own custom plugins, please be sure to [apply the appropriate license][licenses].
