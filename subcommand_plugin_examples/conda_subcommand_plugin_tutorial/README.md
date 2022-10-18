@@ -88,18 +88,18 @@ description = "My ascii graph subcommand plugin"
 requires-python = ">=3.7"
 dependencies = ["conda", "sympy"]
 
-[tools.setuptools]
-py_modules=["ascii_graph"]
-
 [project.entry-points.conda]
 ascii-graph = "ascii_graph"
+
+[tool.setuptools]
+py-modules = ["ascii_graph"]
 ```
 
 > **Note:**
 > #### `[build-system]`
 > - `requires` This is a list of requirement specifiers for build-time dependencies of a package.
 > - `build-backend` Build backends have the ability to accept configuration settings, which can change the way that the package building is handled.
-> 
+>
 > #### `[project]`
 > * `name` (required) This is the name of the package that contains your subcommand. This is also how others will find your subcommand package if you choose to upload it to PyPI.
 > * `version` (required) The version of the project; can be specified *either* statically or listed as dynamic.
