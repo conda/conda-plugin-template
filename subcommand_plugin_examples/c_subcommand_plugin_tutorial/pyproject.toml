@@ -11,3 +11,6 @@ dependencies = ["conda", "cffi>=1.0.0"]
 
 [project.entry-points.conda]
 temp-converter = "temp_converter.temp_conv_c"
+
+[tool.setuptools]
+packages = ["temp_converter"]
