@@ -6,6 +6,7 @@
 [upload to anaconda.org]: https://docs.anaconda.com/anacondaorg/user-guide/tasks/work-with-packages/#uploading-packages
 [anaconda.org site]: https://anaconda.org/
 [licenses]: https://docs.conda.io/projects/conda/en/latest/dev-guide/plugin-api/index.html#a-note-on-licensing
+[cffi documentation]: https://cffi.readthedocs.io/en/latest/overview.html#main-mode-of-usage
 [pep 621]: https://peps.python.org/pep-0621/
 [pluggy docs]: https://pluggy.readthedocs.io/en/stable/index.html
 
@@ -28,9 +29,12 @@ c_subcommand_plugin/
 ├── recipe/
 │   └── meta.yaml
 ├── LICENSE
-├── c_subcommand.c
-├── pyproject.toml (or setup.py)
-└── conda_c_subcommand.py
+├── temp_converter/
+│   └── builder.py
+│   └── c_to_f.c
+│   └── temp_conv_c.py
+└──── pyproject.toml
+└──── setup.py
 ```
 
 ## Implementing the C side of the subcommand plugin
@@ -39,7 +43,7 @@ First, create a C file (with a `.c` extension) that includes the required functi
 
 ```c
 /**
-* c_to_f.c
+* temp_converter/c_to_f.c
 */
 
 # include <stdio.h>
@@ -61,61 +65,61 @@ int converter()
 }
 ```
 
-Next, create a shared library file (`.so` extension) using the C compiler by running the following command (from the same level as where `c_to_f.c` is located):
+## The custom subcommand module and builder file (the Python side of the subcommand plugin)
 
-```
-$ cc -fPIC -shared -o c_subcommand.so c_subcommand.c
-```
+In the Python module (shown in the example below), we take advantage of CFFI's ability to compile inline C code (usually used to assist with linking an external library) to compile our short C extension.
 
-After running that command, a new shared library file will be generated:
-
-```
-c_subcommand_plugin/
-├── recipe/
-│   └── meta.yaml
-├── LICENSE
-├── c_subcommand.c
-├── c_subcommand.so
-├── pyproject.toml (or setup.py)
-└── conda_c_subcommand.py
-```
-
-## The custom subcommand module (the Python side of the subcommand plugin)
-
-In the Python program (shown in the example below), a `ctypes.CDLL` instance will be created from the shared `.so` file that was generated in the previous step.
-
-The `temp_conv_c.py` module can then call the C function using the format `CDLL(so_file)` from inside of the `conda_temp_converter()` function. Once that code is in place, then the `conda_temp_converter()` function can be registered via the plugin manager hook called `conda_subcommands` using the `@conda.plugins.register` decorator:
+The `temp_conv_c.py` module can then call the C code using the `lib.converter()` function (a feature of `_converter`) from inside of the `conda_temp_converter()`. Once that code is in place, then the `conda_temp_converter()` function can be registered via the plugin manager hook called `conda_subcommands` using the `@plugins.hookimpl` decorator:
 
 ```python
-# temp_conv_c.py
+# temp_converter/temp_conv_c.py
 
-from ctypes import *
-from conda.plugins import hooks
+from conda import plugins
+from conda.models.plugins import CondaSubcommand
+
+from ._converter import lib
 
 
 def conda_temp_converter(*args, **kwargs):
-    so_file = "conda-plugin-template/subcommand_plugin_examples/c_subcommand_plugin_tutorial/temp_converter/c_to_f.so"
-    # The string above should be a relative path that points to the location of the c_to_f.so file!
-    my_functions = CDLL(so_file)
-    return my_functions.converter()
+    lib.converter()
 
 
-@hooks.register
+@plugins.hookimpl
 def conda_subcommands():
-    yield hooks.CondaSubcommand(
+    yield CondaSubcommand(
         name="temp-converter",
-        summary="A subcommand that converts Celsius to Fahrenheit",
+        summary="A C subcommand that converts Celsius to Fahrenheit",
         action=conda_temp_converter,
     )
 ```
 
+We will also need to have a "builder" script:
+
+```python
+# temp_converter/builder.py
+import pathlib
+
+import cffi
+
+c_to_f = pathlib.Path(__file__).parent / "c_to_f.c"
+
+ffibuilder = cffi.FFI()
+ffibuilder.set_source("temp_converter._converter", c_to_f.read_text())
+ffibuilder.cdef("int converter();")
+
+if __name__ == "__main__":
+    ffibuilder.compile(verbose=True)
+```
+
+To read more about CFFI and how it works to enable the C program to run via Python, please check out [their documentation][cffi documentation].
+
 ## Packaging the custom subcommand using `pyproject.toml`
 
-In order to install the `conda temp-converter` custom subcommand, we will need to configure a Python build system. You can either use the [PEP 621][pep 621] compliant `pyproject.toml` or alternatively `setup.py` can be used (not shown in this tutorial):
+In order to install the `conda temp-converter` custom subcommand, we will need to configure a Python build system. For this example we will need both the [PEP 621][pep 621]-compliant `pyproject.toml` file:
 
 ```toml
 [build-system]
-requires = ["setuptools>=61.0", "setuptools-scm"]
+requires = ["setuptools>=61.0", "setuptools-scm", "cffi>=1.0.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -123,13 +127,13 @@ name = "temp-converter"
 version = "1.0"
 description = "A custom subcommand written in C that converts Celsius to Fahrenheit"
 requires-python = ">=3.7"
-dependencies = ["conda"]
-
-[tools.setuptools]
-py_modules=["temp-converter"]
+dependencies = ["conda", "cffi>=1.0.0"]
 
 [project.entry-points.conda]
-temp-converter = "temp_conv_c"
+temp-converter = "temp_converter.temp_conv_c"
+
+[tool.setuptools]
+packages = ["temp_converter"]
 ```
 
 <details>
@@ -151,6 +155,14 @@ temp-converter = "temp_conv_c"
 </details>
 
 
+Additionally, a `setup.py` file is required for the `cffi_modules` parameter:
+
+```python
+from setuptools import setup
+
+setup(cffi_modules=["temp_converter/builder.py:ffibuilder"])
+```
+
 > **Note:**
 > For more information about entry points specification in general, please read [PyPA's entrypoints documentation][entrypoints docs].
 
@@ -160,7 +172,7 @@ The custom `temp-converter` subcommand plugin can be installed as an editable in
 
 
 ```bash
-pip install -e .
+$ pip install -e .
 ```
 
 To learn more about editable installs, please read the [corresponding pip documentation page][editable install doc].
