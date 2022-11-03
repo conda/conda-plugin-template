@@ -39,11 +39,12 @@ The following module implements a function, `ascii_graph` (where a set of three 
 ```python
 # ascii_graph.py
 
+import argparse
 from sympy import symbols
 from sympy.plotting import textplot
 
-import argparse
-import conda.plugins
+from conda import plugins
+from conda.models.plugins import CondaSubcommand
 
 
 def ascii_graph(argv: list):
@@ -59,9 +60,9 @@ def ascii_graph(argv: list):
     textplot(s**args.x,args.y,args.z)
 
 
-@conda.plugins.register
+@plugins.hookimpl
 def conda_subcommands():
-    yield conda.plugins.CondaSubcommand(
+    yield CondaSubcommand(
         name="ascii-graph",
         summary="A subcommand that takes three coordinates and prints out an ascii graph",
         action=ascii_graph,

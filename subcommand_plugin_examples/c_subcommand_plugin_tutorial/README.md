@@ -93,7 +93,7 @@ def conda_subcommands():
     )
 ```
 
-We will also need to have a "builder" script:
+We will also need to have a "builder" script that can write the C code for the extension:
 
 ```python
 # temp_converter/builder.py

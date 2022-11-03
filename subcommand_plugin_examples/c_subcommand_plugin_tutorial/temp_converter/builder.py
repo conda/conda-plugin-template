@@ -1,4 +1,4 @@
-# in a separate file "package/foo_build.py"
+# in a separate file "[package]/foo_build.py"
 import pathlib
 
 import cffi

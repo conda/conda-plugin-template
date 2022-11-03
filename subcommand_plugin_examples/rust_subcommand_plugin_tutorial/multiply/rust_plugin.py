@@ -1,6 +1,8 @@
 import rustiply
 import argparse
-import conda.plugins
+
+from conda import plugins
+from conda.models.plugins import CondaSubcommand
 
 
 def conda_rustiply(argv: list):
@@ -16,9 +18,9 @@ def conda_rustiply(argv: list):
     print(f"\nThe product of {x} * {y} is: {result}\n")
 
 
-@conda.plugins.register
+@plugins.hookimpl
 def conda_subcommands():
-    yield conda.plugins.CondaSubcommand(
+    yield CondaSubcommand(
         name="multiply",
         summary="A subcommand written in Rust that multiplies two integers",
         action=conda_rustiply,
