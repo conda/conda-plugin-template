@@ -14,7 +14,7 @@
 
 In this tutorial, we will create a new conda subcommand written in C that converts Celsius to Fahrenheit.
 
-To follow along with this guide, make sure you have the latest conda and conda-build installed:
+To follow along with this guide, make sure you have the latest conda and conda-build installed as well as pip:
 
 ```bash
 $ conda update conda conda-build pip
