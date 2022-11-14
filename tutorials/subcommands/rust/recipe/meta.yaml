@@ -18,7 +18,6 @@ requirements:
     - maturin
 
 about:
-  home: https://github.com/conda/conda-plugin-template/subcommand_plugin_examples/rust_subcommand_plugin_tutorial/multiply
+  home: https://github.com/conda/conda-plugin-template
   license: BSD-3-Clause
-  license_file: LICENSE
   summary: A subcommand written in Rust that multiplies two integers

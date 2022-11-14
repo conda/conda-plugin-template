@@ -1,5 +1,5 @@
 package:
-  name: temp-converter
+  name: ascii-graph
   version: 1.0
 
 source:
@@ -11,15 +11,13 @@ build:
 requirements:
   host:
     - python >=3.7
-    - cffi>=1.0.0
 
   run:
     - conda
     - python >=3.7
-    - cffi>=1.0.0
+    - sympy
 
 about:
   home: https://github.com/conda/conda-plugin-template
   license: BSD-3-Clause
-  license_file: LICENSE
-  summary: A custom subcommand written in C that converts Celsius to Fahrenheit
+  summary: My ascii graph subcommand plugin

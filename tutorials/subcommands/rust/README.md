@@ -13,14 +13,14 @@
 [pyo3]: https://github.com/PyO3/pyo3
 [pluggy docs]: https://pluggy.readthedocs.io/en/stable/index.html
 
-# Custom conda Subcommand Plugin Tutorial Written in Rust
+# Conda Plugin Tutorials: Subcommands: Rust
 
 In this tutorial, we will create a new conda subcommand written in Rust that multiplies two integers.
 
-To follow along with this guide, make sure you have the latest conda and conda-build installed as well as pip:
+To follow along with this guide, make sure you have the latest conda, conda-build, and pip installed:
 
 ```bash
-$ conda update conda conda-build pip
+(base) $ conda update conda conda-build pip
 ```
 
 It is also recommended to get familiar with the [`pyo3` project][pyo3] by checking out their [documentation][pyo3 docs].
@@ -30,15 +30,14 @@ It is also recommended to get familiar with the [`pyo3` project][pyo3] by checki
 Set up your working directory and files as shown below (or create a new repository using this [template][template]):
 
 ```
-rust_subcommand_plugin/
-├── Cargo.toml
+rust/
 ├── recipe/
 │   └── meta.yaml
-├── LICENSE
-├── pyproject.toml (or setup.py)
+├── src/
+│   └── lib.rs
 ├── rust_plugin.py
-└── src/
-    └── lib.rs
+├── Cargo.toml
+└── pyproject.toml (or setup.py)
 ```
 
 ## Implementing the Rust side of the subcommand plugin
@@ -66,7 +65,7 @@ Once the Rust program is set up as shown in the example above, the Python module
 
 ## The custom subcommand module (the Python side of the subcommand plugin)
 
-The `rust_plugin.py` module in this example imports the `rustiply` function from `src.lib.rs` and calls it inside of the function `conda_rustiply()` (where two numbers multiplied) and then registers `conda_rustiply()` via the plugin manager hook called `conda_subcommands` using the `@conda.plugins.register` decorator:
+The `rust_plugin.py` module in this example imports the `rustiply` function from `src.lib.rs` and calls it inside of the function `conda_rustiply()` (where two numbers multiplied) and then registers `conda_rustiply()` via the plugin manager hook called `conda_subcommands` using the `@conda.plugins.hookimpl` decorator:
 
 ```python
 # rust_plugin.py
@@ -102,7 +101,7 @@ def conda_subcommands():
 
 ## Packaging the custom subcommand using `pyproject.toml`
 
-In order to install the `conda multiply` subcommand we will need to configure a Python build system. You can either use the [PEP 621][pep 621] compliant `pyproject.toml` or alternatively `setup.py` can be used (not shown in this tutorial).
+In order to install the `conda multiply` subcommand, we will need to configure a Python build system. You can either use the [PEP 621][pep 621]-compliant `pyproject.toml` or alternatively `setup.py` can be used (not shown in this tutorial).
 
 Since [Maturin][maturin] is a dependency, it will need to be listed in the `pyproject.toml` file under the `[project]` section:
 
@@ -144,7 +143,7 @@ multiply = "rust_plugin"
 </details>
 
 
-> **Note:**
+> **Note**
 > For more information about entry points specification in general, please read [PyPA's entrypoints documentation][entrypoints docs].
 
 ### Development/editable install
@@ -159,7 +158,7 @@ This creates an [editable installation][editable install doc], which enables cha
 
 After running the above, make sure to run:
 
-```
+```bash
 $ maturin develop
 ```
 
@@ -243,5 +242,5 @@ The product of 5 * 4 is: 20
 
 Congratulations! 🎉 You've successfully implemented a conda subcommand plugin written in Rust! For further reference on how the plugin system works, check out the [official `pluggy` docs][pluggy docs].
 
-> **Note:**
+> **Note**
 > Whenever you develop your own custom plugins, please be sure to [apply the appropriate license][licenses].

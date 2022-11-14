@@ -6,18 +6,18 @@
 [upload to anaconda.org]: https://docs.anaconda.com/anacondaorg/user-guide/tasks/work-with-packages/#uploading-packages
 [anaconda.org site]: https://anaconda.org/
 [licenses]: https://docs.conda.io/projects/conda/en/latest/dev-guide/plugin-api/index.html#a-note-on-licensing
-[cffi documentation]: https://cffi.readthedocs.io/en/latest/overview.html#main-mode-of-usage
+[cffi docs]: https://cffi.readthedocs.io/en/latest/overview.html#main-mode-of-usage
 [pep 621]: https://peps.python.org/pep-0621/
 [pluggy docs]: https://pluggy.readthedocs.io/en/stable/index.html
 
-# Custom conda Subcommand Plugin Tutorial Written in C
+# Conda Plugin Tutorials: Subcommands: C
 
 In this tutorial, we will create a new conda subcommand written in C that converts Celsius to Fahrenheit.
 
-To follow along with this guide, make sure you have the latest conda and conda-build installed as well as pip:
+To follow along with this guide, make sure you have the latest conda, conda-build, and pip installed:
 
 ```bash
-$ conda update conda conda-build pip
+(base) $ conda update conda conda-build pip
 ```
 
 ## Project directory structure
@@ -25,16 +25,15 @@ $ conda update conda conda-build pip
 Set up your working directory and files as shown below (or create a new repository using this [template][template]):
 
 ```
-c_subcommand_plugin/
+c/
 ├── recipe/
 │   └── meta.yaml
-├── LICENSE
 ├── temp_converter/
 │   └── builder.py
 │   └── c_to_f.c
 │   └── temp_conv_c.py
-└──── pyproject.toml
-└──── setup.py
+├── pyproject.toml
+└── setup.py
 ```
 
 ## Implementing the C side of the subcommand plugin
@@ -69,7 +68,7 @@ int converter()
 
 In the Python module (shown in the example below), we take advantage of CFFI's ability to compile inline C code (usually used to assist with linking an external library) to compile our short C extension.
 
-The `temp_conv_c.py` module can then call the C code using the `lib.converter()` function (a feature of `_converter`) from inside of the `conda_temp_converter()`. Once that code is in place, then the `conda_temp_converter()` function can be registered via the plugin manager hook called `conda_subcommands` using the `@plugins.hookimpl` decorator:
+The `temp_conv_c.py` module can then call the C code using the `lib.converter()` function (a feature of `_converter`) from inside of the `conda_temp_converter()`. Once that code is in place, then the `conda_temp_converter()` function can be registered via the plugin manager hook called `conda_subcommands` using the `@conda.plugins.hookimpl` decorator:
 
 ```python
 # temp_converter/temp_conv_c.py
@@ -111,7 +110,7 @@ if __name__ == "__main__":
     ffibuilder.compile(verbose=True)
 ```
 
-To read more about CFFI and how it works to enable the C program to run via Python, please check out [their documentation][cffi documentation].
+To read more about CFFI and how it works to enable the C program to run via Python, please check out [their documentation][cffi docs].
 
 ## Packaging the custom subcommand using `pyproject.toml`
 
@@ -163,7 +162,7 @@ from setuptools import setup
 setup(cffi_modules=["temp_converter/builder.py:ffibuilder"])
 ```
 
-> **Note:**
+> **Note**
 > For more information about entry points specification in general, please read [PyPA's entrypoints documentation][entrypoints docs].
 
 ### Development/editable install
@@ -179,7 +178,7 @@ To learn more about editable installs, please read the [corresponding pip docume
 
 ### Packaging the custom subcommand using `conda-build`
 
-When you're ready to distribute your custom `temp-converter` subcommand plugin you can package it as a conda package:
+When you're ready to distribute your custom `temp-converter` subcommand plugin, you can package it as a conda package:
 
 <details>
 <summary><code>recipe/meta.yaml</code></summary>
@@ -198,15 +197,16 @@ build:
 requirements:
   host:
     - python >=3.7
+    - cffi>=1.0.0
 
   run:
     - conda
     - python >=3.7
+    - cffi>=1.0.0
 
 about:
   home: https://github.com/conda/conda-plugin-template
   license: BSD-3-Clause
-  license_file: LICENSE
   summary: A custom subcommand written in C that converts Celsius to Fahrenheit
 ```
 
@@ -259,5 +259,5 @@ Enter the temperature in Celsius:
 Congratulations! 🎉 You've successfully implemented a conda subcommand plugin written in C! For further reference on how the plugin system works, check out the [official `pluggy` docs][pluggy docs].
 
 
-> **Note:**
+> **Note**
 > Whenever you develop your own custom plugins, please be sure to [apply the appropriate license][licenses].

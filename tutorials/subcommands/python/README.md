@@ -10,22 +10,22 @@
 [pep 621]: https://peps.python.org/pep-0621/
 [setup.py docs]: https://docs.python.org/3/distutils/setupscript.html
 
-# Custom conda Subcommand Plugin Tutorial
+# Conda Plugin Tutorials: Subcommands: Python
 
-In this tutorial, we will create a new conda subcommand that takes an input of three coordinates and prints out an ASCII graph.
+In this tutorial, we will create a new conda subcommand written in Python that takes an input of three coordinates and prints out an ASCII graph.
 
-To follow along with this guide, make sure you have the latest conda and conda-build installed:
+To follow along with this guide, make sure you have the latest conda, conda-build, and pip installed:
 
 ```bash
-(base) $ conda update conda conda-build
+(base) $ conda update conda conda-build pip
 ```
 
 ## Project directory structure
 
-Set up your working directory and files as shown below (or create a new repo using this [template][template]):
+Set up your working directory and files as shown below (or create a new repository using this [template][template]):
 
 ```
-conda-plugin-template/
+python/
 ├── recipe/
 │   └── meta.yaml
 ├── ascii_graph.py
@@ -34,7 +34,7 @@ conda-plugin-template/
 
 ## The custom subcommand module
 
-The following module implements a function, `ascii_graph` (where a set of three numbers gets converted into an ascii graph), and registers it with the plugin manager hook called `conda_subcommands` using the `@conda.plugins.register` decorator.
+The following module implements a function, `ascii_graph` (where a set of three numbers gets converted into an ascii graph), and registers it with the plugin manager hook called `conda_subcommands` using the `@conda.plugins.hookimpl` decorator:
 
 ```python
 # ascii_graph.py
@@ -72,7 +72,7 @@ def conda_subcommands():
 
 ## Packaging the custom subcommand using `pyproject.toml`
 
-In order to install the `conda ascii-graph` subcommand we will need to configure a Python build system. You can either use the [PEP 621][pep 621] compliant `pyproject.toml` or the classic `setup.py`:
+In order to install the `conda ascii-graph` subcommand, we will need to configure a Python build system. You can either use the [PEP 621][pep 621]-compliant `pyproject.toml` or the classic `setup.py`:
 
 <details>
 <summary><code>pyproject.toml</code></summary>
@@ -96,7 +96,7 @@ ascii-graph = "ascii_graph"
 py-modules = ["ascii_graph"]
 ```
 
-> **Note:**
+> **Note**
 > #### `[build-system]`
 > - `requires` This is a list of requirement specifiers for build-time dependencies of a package.
 > - `build-backend` Build backends have the ability to accept configuration settings, which can change the way that the package building is handled.
@@ -129,7 +129,7 @@ setup(
 )
 ```
 
-> **Note:**
+> **Note**
 > * `name` This is the name of the package that contains your subcommand. This is also how others will find your subcommand package if you choose to upload it to PyPI.
 > * `install_requires` These are all of the dependencies for your project. This should at a minimum always contain the version of conda for which your plugin is compatible with.
 > * `entry_points` The entry point you list here is how conda will discover your plugin and should point to the file containing the `conda.plugins.register` hook. In our simple use case, it points to the `ascii_graph` module contained within the `ascii_graph.py` file. For more complex examples where your module is contained within a folder, it may look more like `my_module.main` or `my_modules.plugin_hooks`.
@@ -139,7 +139,7 @@ setup(
 
 </details>
 
-> **Note:**
+> **Note**
 > For more information about entry points specification in general, please read [PyPA's entrypoints documentation][entrypoints docs].
 
 ### Development/Editable Install
@@ -180,9 +180,8 @@ requirements:
     - sympy
 
 about:
-  home: https://github.com/conda/conda-plugin-template/subcommand_plugin_examples/conda_subcommand_plugin_tutorial
+  home: https://github.com/conda/conda-plugin-template
   license: BSD-3-Clause
-  license_file: LICENSE
   summary: My ascii graph subcommand plugin
 ```
 
@@ -193,6 +192,7 @@ $ conda build ./recipe
 ```
 
 There is more detailed information available via the [`conda-build` documentation][build conda packages] on how to build conda packages from scratch. Please also check out [this documentation page][upload to anaconda.org] if you'd like to learn how to upload your subcommand package to [anaconda.org][anaconda.org site].
+
 ## The subcommand output
 
 Once the subcommand plugin is successfully installed or registered, the help text will display it as an additional option available from other packages:
@@ -251,5 +251,5 @@ $ conda ascii-graph 3 -4 6.878
 
 Congratulations! 🎉 You've just implemented your first custom conda subcommand plugin! For further reference on how the plugin system works, check out the [official `pluggy` docs][pluggy docs].
 
-> **Note:**
+> **Note**
 > Whenever you develop your own custom plugins, please be sure to [apply the appropriate license][licenses].
