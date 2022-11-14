@@ -73,8 +73,7 @@ The `temp_conv_c.py` module can then call the C code using the `lib.converter()`
 ```python
 # temp_converter/temp_conv_c.py
 
-from conda import plugins
-from conda.models.plugins import CondaSubcommand
+import conda.plugins
 
 from ._converter import lib
 
@@ -83,9 +82,9 @@ def conda_temp_converter(*args, **kwargs):
     lib.converter()
 
 
-@plugins.hookimpl
+@conda.plugins.hookimpl
 def conda_subcommands():
-    yield CondaSubcommand(
+    yield conda.plugins.CondaSubcommand(
         name="temp-converter",
         summary="A C subcommand that converts Celsius to Fahrenheit",
         action=conda_temp_converter,

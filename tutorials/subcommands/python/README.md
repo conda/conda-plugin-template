@@ -40,11 +40,11 @@ The following module implements a function, `ascii_graph` (where a set of three 
 # ascii_graph.py
 
 import argparse
+
 from sympy import symbols
 from sympy.plotting import textplot
 
-from conda import plugins
-from conda.models.plugins import CondaSubcommand
+import conda.plugins
 
 
 def ascii_graph(argv: list):
@@ -57,16 +57,16 @@ def ascii_graph(argv: list):
     args = parser.parse_args(argv)
 
     s = symbols('s')
-    textplot(s**args.x,args.y,args.z)
+    textplot(s**args.x, args.y, args.z)
 
 
-@plugins.hookimpl
+@conda.plugins.hookimpl
 def conda_subcommands():
-    yield CondaSubcommand(
+    yield conda.plugins.CondaSubcommand(
         name="ascii-graph",
         summary="A subcommand that takes three coordinates and prints out an ascii graph",
         action=ascii_graph,
-        )
+    )
 ```
 
 

@@ -70,11 +70,11 @@ The `rust_plugin.py` module in this example imports the `rustiply` function from
 ```python
 # rust_plugin.py
 
-import rustiply
 import argparse
 
-from conda import plugins
-from conda.models.plugins import CondaSubcommand
+import rustiply
+
+import conda.plugins
 
 
 def conda_rustiply(argv: list):
@@ -90,9 +90,9 @@ def conda_rustiply(argv: list):
     print(f"\nThe product of {x} * {y} is: {result}\n")
 
 
-@plugins.hookimpl
+@conda.plugins.hookimpl
 def conda_subcommands():
-    yield CondaSubcommand(
+    yield conda.plugins.CondaSubcommand(
         name="multiply",
         summary="A subcommand written in Rust that multiplies two integers",
         action=conda_rustiply,
