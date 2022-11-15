@@ -3,14 +3,14 @@ requires = ["setuptools>=61.0", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "ascii-graph"
+name = "multiply"
 version = "1.0"
-description = "My ascii graph subcommand plugin"
+description = "A subcommand written in Rust that multiplies two integers"
 requires-python = ">=3.7"
-dependencies = ["conda", "sympy"]
+dependencies = ["conda", "maturin"]
 
 [tools.setuptools]
-py_modules=["ascii_graph"]
+py_modules=["multiply"]
 
 [project.entry-points.conda]
-ascii-graph = "ascii_graph"
+multiply = "rust_plugin"

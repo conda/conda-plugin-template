@@ -1,7 +1,8 @@
+import argparse
+
 from sympy import symbols
 from sympy.plotting import textplot
 
-import argparse
 import conda.plugins
 
 
@@ -15,13 +16,13 @@ def ascii_graph(argv: list):
     args = parser.parse_args(argv)
 
     s = symbols('s')
-    textplot(s**args.x,args.y,args.z)
+    textplot(s**args.x, args.y, args.z)
 
 
-@conda.plugins.register
+@conda.plugins.hookimpl
 def conda_subcommands():
     yield conda.plugins.CondaSubcommand(
         name="ascii-graph",
         summary="A subcommand that takes three coordinates and prints out an ascii graph",
         action=ascii_graph,
-        )
+    )

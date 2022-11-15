@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=61.0", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ascii-graph"
+version = "1.0"
+description = "My ascii graph subcommand plugin"
+requires-python = ">=3.7"
+dependencies = ["conda", "sympy"]
+
+[project.entry-points.conda]
+ascii-graph = "ascii_graph"
+
+[tool.setuptools]
+py-modules = ["ascii_graph"]

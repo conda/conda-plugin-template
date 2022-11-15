@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=61.0", "setuptools-scm", "cffi>=1.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "temp-converter"
+version = "1.0"
+description = "A custom subcommand written in C that converts Celsius to Fahrenheit"
+requires-python = ">=3.7"
+dependencies = ["conda", "cffi>=1.0.0"]
+
+[project.entry-points.conda]
+temp-converter = "temp_converter.temp_conv_c"
+
+[tool.setuptools]
+packages = ["temp_converter"]

@@ -1,0 +1,23 @@
+package:
+  name: multiply
+  version: 1.0
+
+source:
+  path: ../
+
+build:
+  script: $PYTHON -m pip install --no-deps .
+
+requirements:
+  host:
+    - python >=3.7
+
+  run:
+    - conda
+    - python >=3.7
+    - maturin
+
+about:
+  home: https://github.com/conda/conda-plugin-template
+  license: BSD-3-Clause
+  summary: A subcommand written in Rust that multiplies two integers
