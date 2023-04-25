@@ -104,9 +104,9 @@ py-modules = ["ascii_graph"]
 > #### `[project]`
 > * `name` (required) This is the name of the package that contains your subcommand. This is also how others will find your subcommand package if you choose to upload it to PyPI.
 > * `version` (required) The version of the project; can be specified *either* statically or listed as dynamic.
-> `description` A brief description of the project.
+> * `description` A brief description of the project.
 > * `requires-python` The version(s) of Python required by your project.
-> * `dependencies` These are all of the dependencies for your project. This specific subcommand example requires both `conda` and `sympy`, which is why they are both listed here.
+> * `dependencies` These are the dependencies for your project. This specific subcommand example requires both `conda` and `sympy`, which is why they are both listed here.
 >
 > For more information on `pyproject.toml` see the [PyPA packaging documentation][pyproject.toml docs].
 
