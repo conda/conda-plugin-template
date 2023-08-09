@@ -143,7 +143,7 @@ $ pip install -e .
 
 To learn more about editable installs, please read the [corresponding pip documentation page][editable install doc].
 
-### Packaging the custom subcommand using `conda-build`
+### Packaging the custom post-command using `conda-build`
 
 When you're ready to distribute your custom `package-counter` post-command plugin you can package it as a conda package:
 
