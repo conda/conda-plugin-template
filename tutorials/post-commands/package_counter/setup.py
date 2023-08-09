@@ -3,7 +3,7 @@ from setuptools import setup
 setup(
     name="package-counter",
     version="1.0",
-    description="Check the health of your environments before exporting them",
+    description="Displays the number of packages in the environments",
     python_requires=">=3.7",
     install_requires=["conda"],
     py_modules=["package_counter"],
