@@ -34,7 +34,7 @@ package_counter/
 
 ## The custom post-command module
 
-The following module implements a function, `package_counter`, and registers it with the plugin manager hook called `conda_post_commands` using the `@conda.plugins.hookimpl` decorator:
+The following module implements a function, `package_counter`, and registers it with the plugin manager hook called `conda_post_commands` using the `@conda.plugins.hookimpl` decorator. The `package_counter` function makes a call to the conda API to retrieve the number of installed packages in the environment via the PrefixData object.
 
 ```python
 import conda.plugins
@@ -61,9 +61,9 @@ def conda_post_commands():
     )
 ```
 
-## Packaging the custom subcommand using `pyproject.toml`
+## Packaging the custom post-command using `pyproject.toml`
 
-In order to install the `conda ascii-graph` subcommand, we will need to configure a Python build system. You can either use the [PEP 621][pep 621]-compliant `pyproject.toml` or the classic `setup.py`:
+In order to install the `package-counter` post-command, we will need to configure a Python build system. You can either use the [PEP 621][pep 621]-compliant `pyproject.toml` or the classic `setup.py`:
 
 <details>
 <summary><code>pyproject.toml</code></summary>
@@ -76,7 +76,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "package-counter"
 version = "1.0"
-description = "Counts the number of packages in the environment"
+description = "Displays the number of packages in the environment"
 requires-python = ">=3.7"
 dependencies = ["conda"]
 
@@ -112,7 +112,7 @@ from setuptools import setup
 setup(
     name="package-counter",
     version="1.0",
-    description="Displays the number of packages in the environments",
+    description="Displays the number of packages in the environment",
     python_requires=">=3.7",
     install_requires=["conda"],
     py_modules=["package_counter"],
@@ -145,7 +145,7 @@ To learn more about editable installs, please read the [corresponding pip docume
 
 ### Packaging the custom subcommand using `conda-build`
 
-When you're ready to distribute your custom `ascii-graph` subcommand plugin you can package it as a conda package:
+When you're ready to distribute your custom `package-counter` post-command plugin you can package it as a conda package:
 
 <details>
 <summary><code>recipe/meta.yaml</code></summary>
@@ -181,7 +181,7 @@ about:
 $ conda build ./recipe
 ```
 
-There is more detailed information available via the [`conda-build` documentation][build conda packages] on how to build conda packages from scratch. Please also check out [this documentation page][upload to anaconda.org] if you'd like to learn how to upload your subcommand package to [anaconda.org][anaconda.org site].
+There is more detailed information available via the [`conda-build` documentation][build conda packages] on how to build conda packages from scratch. Please also check out [this documentation page][upload to anaconda.org] if you'd like to learn how to upload your post-command package to [anaconda.org][anaconda.org site].
 
 > **Note**
 > Whenever you develop your own custom plugins, please be sure to [apply the appropriate license][licenses].
