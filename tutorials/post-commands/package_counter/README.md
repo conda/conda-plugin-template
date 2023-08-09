@@ -93,11 +93,11 @@ py-modules = ["package_counter"]
 > - `build-backend` Build backends have the ability to accept configuration settings, which can change the way that the package building is handled.
 >
 > #### `[project]`
-> * `name` (required) This is the name of the package that contains your subcommand. This is also how others will find your subcommand package if you choose to upload it to PyPI.
+> * `name` (required) This is the name of the package that contains your post-command. This is also how others will find your post-command package if you choose to upload it to PyPI.
 > * `version` (required) The version of the project; can be specified *either* statically or listed as dynamic.
 > * `description` A brief description of the project.
 > * `requires-python` The version(s) of Python required by your project.
-> * `dependencies` These are the dependencies for your project. This specific subcommand example requires both `conda` and `sympy`, which is why they are both listed here.
+> * `dependencies` These are the dependencies for your project. This specific post-command example requires only `conda`.
 >
 > For more information on `pyproject.toml` see the [PyPA packaging documentation][pyproject.toml docs].
 
@@ -121,7 +121,7 @@ setup(
 ```
 
 > **Note**
-> * `name` This is the name of the package that contains your subcommand. This is also how others will find your subcommand package if you choose to upload it to PyPI.
+> * `name` This is the name of the package that contains your post-command. This is also how others will find your post-command package if you choose to upload it to PyPI.
 > * `install_requires` These are all of the dependencies for your project. This should at a minimum always contain the version of conda for which your plugin is compatible with.
 > * `entry_points` The entry point you list here is how conda will discover your plugin and should point to the file containing the `conda.plugins.register` hook. In our simple use case, it points to the `package_counter` module contained within the `package_counter.py` file. For more complex examples where your module is contained within a folder, it may look more like `my_module.main` or `my_modules.plugin_hooks`.
 > * `py_modules` The `py_modules` variables lets `setup` know exactly where to look for all of the modules that comprise your plugin source code.
