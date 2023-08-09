@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "package-counter"
 version = "1.0"
-description = "Counts the number of packages in the environment"
+description = "Displays the number of packages in the environment"
 requires-python = ">=3.7"
 dependencies = ["conda"]
 
