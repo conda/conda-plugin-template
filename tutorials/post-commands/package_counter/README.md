@@ -34,7 +34,7 @@ package_counter/
 
 ## The custom post-command module
 
-The following module implements a function, `package_counter`, and registers it with the plugin manager hook called `conda_post_commands` using the `@conda.plugins.hookimpl` decorator. The `package_counter` function makes a call to the conda API to retrieve the number of installed packages in the environment via the PrefixData object.
+The following module implements a function, `package_counter`, and registers it with the plugin manager hook called `conda_post_commands` using the `@conda.plugins.hookimpl` decorator. The `package_counter` function makes a call to the conda API to retrieve the number of installed packages in the environment via the `PrefixData` object.
 
 ```python
 import conda.plugins
