@@ -27,6 +27,7 @@ plugin_name:
   type: str
   help: What is your conda plugin name?
 
-copyright_holder:
-  type: str
-  help: Who is the copyright holder?
+use_precommit:
+    type: bool
+    default: false
+    help: Do you want to use pre-commit?
