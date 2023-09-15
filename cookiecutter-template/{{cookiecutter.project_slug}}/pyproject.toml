@@ -3,9 +3,9 @@ requires = ["setuptools>=61.0", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "{{project_name}}"
+name = "{{cookiecutter.project_name}}"
 version = "0.1.0"
-description = "{{project_description}}"
+description = "{{cookiecutter.project_description}}"
 requires-python = ">=3.8"
 classifiers = [
   "Operating System :: OS Independent",
@@ -23,7 +23,7 @@ dependencies = [
 ]
 
 [project.entry-points.conda]
-{{project_name}} = "{{package_name}}.hooks"
+{{cookiecutter.project_name}} = "{{cookiecutter.package_name}}.hooks"
 
 [tool.setuptools]
-packages = ["{{package_name}}"]
+packages = ["{{cookiecutter.package_name}}"]

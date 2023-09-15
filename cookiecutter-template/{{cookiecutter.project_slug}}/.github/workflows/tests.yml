@@ -1,4 +1,4 @@
-name: {{project_name}} tests
+name: {{cookiecutter.project_name}} tests
 
 on:
   push:
