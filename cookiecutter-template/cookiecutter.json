@@ -1,0 +1,7 @@
+{
+  "project_name": "Conda Plugin Template",
+  "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_') }}",
+  "project_description": "",
+  "package_name": "",
+  "use_precommit": false
+}

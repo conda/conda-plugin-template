@@ -1,0 +1,6 @@
+name: {{cookiecutter.project_name}}
+channels:
+  - conda-forge
+dependencies:
+  - python>=3.8
+  - conda-canary/label/dev::conda
