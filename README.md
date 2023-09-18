@@ -14,7 +14,13 @@ We currently have a [cookiecutter](https://cookiecutter.io) template you can use
 start a new conda plugin project. To use it, run the following command:
 
 ```
-cookiecutter gh:conda/conda-plugin-template.git --directory="cookiecutter-template"
+cookiecutter gh:conda/conda-plugin-template --directory="cookiecutter-template"
+```
+
+or
+
+```
+cookiecutter https://github.com/conda/conda-plugin-template.git --directory="cookiecutter-template"
 ```
 
 If you do not currently have cookiecutter installed, please refer to their 
