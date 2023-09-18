@@ -7,7 +7,7 @@
 [build conda packages]: https://docs.conda.io/projects/conda-build/en/latest/user-guide/tutorials/build-pkgs.html
 [upload to anaconda.org]: https://docs.anaconda.com/anacondaorg/user-guide/tasks/work-with-packages/#uploading-packages
 [anaconda.org site]: https://anaconda.org/
-[licenses]: https://docs.conda.io/projects/conda/en/latest/dev-guide/plugin-api/index.html#a-note-on-licensing
+[licenses]: https://docs.conda.io/projects/conda/en/latest/dev-guide/plugins/index.html#a-note-on-licensing
 [pep 621]: https://peps.python.org/pep-0621/
 [maturin]: https://github.com/PyO3/maturin
 [pyo3]: https://github.com/PyO3/pyo3
