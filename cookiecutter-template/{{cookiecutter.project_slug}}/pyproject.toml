@@ -3,7 +3,7 @@ requires = ["setuptools>=61.0", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "{{cookiecutter.project_name}}"
+name = "{{cookiecutter.project_slug}}"
 version = "0.1.0"
 description = "{{cookiecutter.project_description}}"
 requires-python = ">=3.8"
