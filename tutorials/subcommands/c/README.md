@@ -5,7 +5,7 @@
 [build conda packages]: https://docs.conda.io/projects/conda-build/en/latest/user-guide/tutorials/build-pkgs.html
 [upload to anaconda.org]: https://docs.anaconda.com/anacondaorg/user-guide/tasks/work-with-packages/#uploading-packages
 [anaconda.org site]: https://anaconda.org/
-[licenses]: https://docs.conda.io/projects/conda/en/latest/dev-guide/plugin-api/index.html#a-note-on-licensing
+[licenses]: https://docs.conda.io/projects/conda/en/latest/dev-guide/plugins/index.html#a-note-on-licensing
 [cffi docs]: https://cffi.readthedocs.io/en/latest/overview.html#main-mode-of-usage
 [pep 621]: https://peps.python.org/pep-0621/
 [pluggy docs]: https://pluggy.readthedocs.io/en/stable/index.html

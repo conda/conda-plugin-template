@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=61.0", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "package-counter"
+version = "1.0"
+description = "Displays the number of packages in the environment"
+requires-python = ">=3.7"
+dependencies = ["conda"]
+
+[project.entry-points.conda]
+package-counter = "package_counter"
+
+[tool.setuptools]
+py-modules = ["package_counter"]
