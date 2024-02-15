@@ -25,3 +25,7 @@ cookiecutter https://github.com/conda/conda-plugin-template.git --directory="coo
 
 If you do not currently have cookiecutter installed, please refer to their 
 [installation guide](https://cookiecutter.readthedocs.io/en/stable/installation.html).
+
+## Share Your Plugins
+
+Please consider submitting a pull request with a link to your conda plugin to the [conda-incubator/plugins](https://github.com/conda-incubator/plugins) repository. This will help others find your plugin and use it.
