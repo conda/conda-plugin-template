@@ -195,6 +195,9 @@ There is more detailed information available via the [`conda-build` documentatio
 
 ## The subcommand output
 
+> **Note**
+> * If you have installed your plugin in an environment that is *not* your base environment, you will have to use that environment's conda to run the plugin. You may do so by replacing `conda` with `${CONDA_PREFIX}/bin/conda` in each of the instructions below.
+
 Once the subcommand plugin is successfully installed or registered, the help text will display it as an additional option available from other packages:
 
 ```bash
