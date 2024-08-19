@@ -23,7 +23,7 @@ dependencies = [
 ]
 
 [project.entry-points.conda]
-{{cookiecutter.project_slug}} = "{{cookiecutter.package_name}}.hooks"
+{{cookiecutter.package_name}} = "{{cookiecutter.package_name}}.hooks"
 
 [tool.setuptools]
 packages = ["{{cookiecutter.package_name}}"]
