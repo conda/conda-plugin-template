@@ -1,0 +1,7 @@
+name: {{ cookiecutter.project_slug }}
+environments:
+  default:
+    - environment.yml
+variables:
+  CONDA_EXE: "$CONDA_PREFIX/condabin/conda"
+commands: {}
