@@ -2,6 +2,11 @@
   "project_name": "",
   "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '-') }}",
   "project_description": "",
-  "package_name": "{{ cookiecutter.project_name.lower().replace(' ', '_') }}",
-  "use_precommit": false
+  "package_name": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
+  "github_user_or_org": "",
+  "github_repo": "{{ cookiecutter.project_name.lower().replace(' ', '-') }}",
+  "use_precommit": false,
+  "use_vcs_version": true,
+  "use_pixi": false,
+  "add_docs": true
 }

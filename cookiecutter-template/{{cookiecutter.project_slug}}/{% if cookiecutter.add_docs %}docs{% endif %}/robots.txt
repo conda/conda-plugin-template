@@ -1,0 +1,3 @@
+User-agent: *
+
+Sitemap: https://{{cookiecutter.github_user_or_org}}.github.io/{{cookiecutter.github_repo}}/sitemap.xml

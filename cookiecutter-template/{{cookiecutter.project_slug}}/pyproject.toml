@@ -1,29 +1,137 @@
 [build-system]
-requires = ["setuptools>=61.0", "setuptools-scm"]
-build-backend = "setuptools.build_meta"
+{%- if cookiecutter.use_vcs_version %}
+requires = ["hatchling>=1.12.2", "hatch-vcs>=0.2.0"]
+{%- else %}
+requires = ["hatchling>=1.12.2"]
+{%- endif %}
+build-backend = "hatchling.build"
 
 [project]
 name = "{{cookiecutter.project_slug}}"
-version = "0.1.0"
 description = "{{cookiecutter.project_description}}"
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 classifiers = [
   "Operating System :: OS Independent",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3 :: Only",
-  "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy"
 ]
 dependencies = [
-  "conda",
+  # "conda >=23.9.0",
 ]
+{%- if cookiecutter.use_vcs_version %}
+dynamic = ["version"]
 
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "{{cookiecutter.package_name}}/_version.py"
+{%- else %}
+version = "0.1.0"
+{% endif %}
 [project.entry-points.conda]
-{{cookiecutter.project_slug}} = "{{cookiecutter.package_name}}.hooks"
+"{{cookiecutter.project_slug}}" = "{{cookiecutter.package_name}}.plugin"
 
-[tool.setuptools]
-packages = ["{{cookiecutter.package_name}}"]
+
+[tool.coverage.report]
+exclude_lines = ["pragma: no cover", "if TYPE_CHECKING:"]
+omit = ["{{cookiecutter.package_name}}/_version.py"]
+show_missing = true
+skip_covered = true
+sort = "Miss"
+
+[tool.mypy]
+warn_no_return = false
+exclude = "(stubs|docs)/.*"
+
+
+[tool.ruff]
+target-version = "py39"
+
+[tool.ruff.lint]
+flake8-type-checking = {exempt-modules = [], strict = true}
+# see https://docs.astral.sh/ruff/rules/
+select = [
+  # "D1",  # pydocstyle
+  "E",  # pycodestyle errors
+  "F",  # pyflakes
+  "FA",  # flake8-future-annotations
+  "I",  # isort
+  "ISC",  # flake8-implicit-str-concat
+  "RUF100",  # Unused noqa directive
+  "T10",  # flake8-debugger
+  "TCH",  # flake8-type-checking
+  "UP",  # pyupgrade
+  "W",  # pycodestyle warnings
+]
+{% if cookiecutter.use_pixi %}
+[tool.pixi.project]
+channels = ["conda-forge"]
+platforms = ["linux-64", "osx-64", "osx-arm64", "win-64"]
+
+[tool.pixi.dependencies]
+python = ">=3.9"
+conda = ">=23.9"
+
+[tool.pixi.pypi-dependencies]
+"{{cookiecutter.project_slug}}" = { path  = ".", editable = true }
+
+[tool.pixi.feature.build]
+dependencies = { conda-build = "*" }
+tasks = { build = "conda build recipe" }
+{% if cookiecutter.add_docs %}
+[tool.pixi.feature.docs.tasks]
+docs = { cmd = "python -m sphinx.cmd.build -M dirhtml . _build", cwd = "docs" }
+serve = { cmd = "python -m http.server", cwd = "docs/_build/dirhtml" }
+clean = { cmd = "rm -rf _build", cwd = "docs" }
+
+[tool.pixi.feature.docs.dependencies]
+python = "3.10.*"
+conda-sphinx-theme = "*"
+linkify-it-py = "*"
+myst-parser = "*"
+sphinx = "*"
+sphinx-copybutton = "*"
+sphinx-design = "*"
+sphinx-reredirects = "*"
+sphinx-sitemap = "*"
+sphinxcontrib-programoutput = "*"
+{% endif %}
+[tool.pixi.feature.test.tasks]
+test = 'python -m pytest'
+pre-commit = 'pre-commit'
+lint = 'pre-commit'
+
+[tool.pixi.feature.test.dependencies]
+pytest = "*"
+pytest-mock = "*"
+pre-commit = "*"
+pytest-cov = ">=6.1.1,<7"
+
+[tool.pixi.feature.py39.dependencies]
+python = "3.9.*"
+
+[tool.pixi.feature.py310.dependencies]
+python = "3.10.*"
+
+[tool.pixi.feature.py311.dependencies]
+python = "3.11.*"
+
+[tool.pixi.feature.py312.dependencies]
+python = "3.12.*"
+
+[tool.pixi.environments]
+dev = ["py39"]
+build = ["build"]
+{% if cookiecutter.add_docs %}docs = ["docs"]{% endif %}
+test-py39 = ["test", "py39"]
+test-py310 = ["test", "py310"]
+test-py311 = ["test", "py311"]
+test-py312 = ["test", "py312"]
+{%- endif %}
