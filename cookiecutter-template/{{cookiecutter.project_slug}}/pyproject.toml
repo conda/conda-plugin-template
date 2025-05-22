@@ -11,9 +11,10 @@ name = "{{cookiecutter.project_slug}}"
 description = "{{cookiecutter.project_description}}"
 license = {file = "LICENSE"}
 readme = "README.md"
-requires-python = ">=3.9"
+license = {file = "LICENSE"}
 classifiers = [
   "Operating System :: OS Independent",
+  # "License :: OSI Approved :: Choose one once LICENSE is populated",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3 :: Only",
   "Programming Language :: Python :: 3.9",
@@ -23,6 +24,7 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy"
 ]
+requires-python = ">=3.9"
 dependencies = [
   # "conda >=23.9.0",
 ]
