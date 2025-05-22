@@ -10,6 +10,7 @@ build-backend = "hatchling.build"
 name = "{{cookiecutter.project_slug}}"
 description = "{{cookiecutter.project_description}}"
 license = {file = "LICENSE"}
+readme = "README.md"
 requires-python = ">=3.9"
 classifiers = [
   "Operating System :: OS Independent",
