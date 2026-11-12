@@ -5,7 +5,8 @@ We have illustrated how this is done by defining a simple "hello conda"
 subcommand for you.
 """
 
-from conda.plugins import hookimpl, CondaSubcommand
+from conda.plugins import hookimpl
+from conda.plugins.types import CondaSubcommand
 
 
 @hookimpl
@@ -14,7 +15,7 @@ def conda_subcommands():
         print("Hello conda!")
 
     yield CondaSubcommand(
-        name="hello", 
+        name="hello",
         action=hello_conda,
         summary="Command that prints \"Hello conda!\""
     )
